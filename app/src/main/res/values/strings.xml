@@ -1,3 +1,20 @@
 <resources>
+
     <string name="app_name">VehicleExpensesApplication</string>
+    <string name="average_usage_caps">AVERAGE USAGE</string>
+    <string name="traveling_costs_caps">TRAVELING COSTS</string>
+    <string name="latest_refill_caps">LATEST REFILL:</string>
+    <string name="in_total_caps">IN TOTAL:</string>
+    <string name="average_usage_units">L/100KM</string>
+    <string name="traveling_costs_units">PLN/100KM</string>
+    <string name="latest_usage_units">L/100KM</string>
+    <string name="latest_price_units">PLN</string>
+    <string name="latest_mileage_units">KM</string>
+    <string name="settings_text">Settings</string>
+    <string name="history_text">History</string>
+    <string name="main_text">Main</string>
+    <string name="main_title">MAIN</string>
+    <string name="history_title">HISTORY</string>
+    <string name="settings_title">SETTINGS</string>
+
 </resources>
