@@ -17,14 +17,14 @@ public class SharedPrefsHelper  {
         preferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
-    public void saveStartCheckboxStatus(boolean startCheckbox){
+    public void saveCheckboxStatus(boolean startCheckbox){
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ConstantsPreferences.START_CHECKBOX_STATUS, startCheckbox);
         editor.commit();
         editor.apply();
     }
 
-    public boolean getStartCheckboxStatus(){
+    public boolean getCheckboxStatus(){
         Log.d(SHARED_PREFS_NAME, "\n START CHECKBOX STATUS: " + preferences.getBoolean(ConstantsPreferences.START_CHECKBOX_STATUS, START_CHECKBOX));
 
         return preferences.getBoolean(ConstantsPreferences.START_CHECKBOX_STATUS, START_CHECKBOX);
