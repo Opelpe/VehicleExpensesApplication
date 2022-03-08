@@ -1,4 +1,4 @@
-package com.pepe.vehicleexpensesapplication.ui.main;
+package com.pepe.vehicleexpensesapplication.ui.feautures.main;
 
 public interface MainFragmentContract {
     interface View{

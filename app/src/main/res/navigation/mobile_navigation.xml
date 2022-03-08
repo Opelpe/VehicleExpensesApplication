@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="com.pepe.vehicleexpensesapplication.ui.main.MainFragment"
+        android:name="com.pepe.vehicleexpensesapplication.ui.feautures.main.MainFragment"
         android:label="@string/main_title"
         tools:layout="@layout/fragment_main"
         />

@@ -11,7 +11,7 @@
         android:theme="@style/Theme.VehicleExpensesApplication">
 
         <activity
-            android:name=".ui.feautures.activity.MyMainActivity"
+            android:name=".ui.feautures.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity
+            android:name=".ui.feautures.activity.MyMainActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
