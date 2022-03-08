@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "389901073044",
+    "project_id": "vehicle-expenses-application",
+    "storage_bucket": "vehicle-expenses-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389901073044:android:17a5d7895b786f0e3e1281",
+        "android_client_info": {
+          "package_name": "com.pepe.vehicleexpensesapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389901073044-ckf325a7scu0f2jlmirg46ekqutib06c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDER5s25_UShX1-6HzisruABipJcCLy3SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389901073044-ckf325a7scu0f2jlmirg46ekqutib06c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

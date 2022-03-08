@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.feautures.main.MainFragment">
+
+    <TextView
+
+        android:id="@+id/averageUsageText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/average_usage_caps"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toStartOf="@id/travelingCostsText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/averageUsageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="- -"
+        android:paddingStart="5dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="5dp"
+        android:textSize="@dimen/text_xl"
+        app:layout_constraintEnd_toEndOf="@id/averageUsageText"
+        app:layout_constraintStart_toStartOf="@id/averageUsageText"
+        app:layout_constraintTop_toBottomOf="@id/averageUsageText" />
+
+    <TextView
+        android:id="@+id/littersUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/average_usage_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintEnd_toEndOf="@id/averageUsageView"
+        app:layout_constraintTop_toBottomOf="@id/averageUsageView"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/travelingCostsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/traveling_costs_caps"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/averageUsageText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/travelingCostsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="- -"
+        android:paddingStart="5dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="5dp"
+        android:textSize="@dimen/text_xl"
+        app:layout_constraintEnd_toEndOf="@id/travelingCostsText"
+        app:layout_constraintStart_toStartOf="@id/travelingCostsText"
+        app:layout_constraintTop_toBottomOf="@id/travelingCostsText" />
+
+    <TextView
+        android:id="@+id/mileagePriceUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/traveling_costs_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintEnd_toEndOf="@id/travelingCostsView"
+        app:layout_constraintTop_toBottomOf="@id/travelingCostsView" />
+
+
+    <ImageButton
+        android:id="@+id/refillButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="35dp"
+        style="@style/green_round_button"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_local_gas_station_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mileagePriceUnitsText"
+
+        />
+
+    <TextView
+        android:id="@+id/lastRefuelText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:padding="2dp"
+        android:text="@string/latest_refill_caps"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/refillButton" />
+
+
+    <TextView
+        android:id="@+id/littersUsageUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:text="@string/latest_usage_units"
+        android:textAlignment="inherit"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/littersUsageView"
+        app:layout_constraintStart_toEndOf="@id/littersUsageView" />
+
+    <TextView
+        android:id="@+id/littersUsageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="- -"
+        android:paddingStart="@dimen/big_text_pad"
+        android:paddingTop="@dimen/big_text_pad"
+        android:paddingEnd="@dimen/big_text_pad"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lastRefuelText" />
+
+    <View
+        android:id="@+id/dividerUsagePriceLeft"
+        android:layout_width="2dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="15dp"
+        android:background="@color/black"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@id/littersUsageView"
+        app:layout_constraintEnd_toStartOf="@id/littersUsageView"
+        app:layout_constraintTop_toBottomOf="@id/lastRefuelText" />
+
+    <TextView
+        android:id="@+id/priceUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:text="@string/latest_price_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/priceUsageView"
+        app:layout_constraintStart_toEndOf="@id/priceUsageView" />
+
+    <TextView
+        android:id="@+id/priceUsageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:hint="- -"
+        android:paddingStart="@dimen/big_text_pad"
+        android:paddingTop="@dimen/big_text_pad"
+        android:paddingEnd="@dimen/big_text_pad"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintStart_toEndOf="@id/dividerUsagePriceRight"
+        app:layout_constraintTop_toBottomOf="@id/lastRefuelText" />
+
+    <View
+        android:id="@+id/dividerUsagePriceRight"
+        android:layout_width="2dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/black"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@id/littersUsageView"
+        app:layout_constraintStart_toEndOf="@id/littersUsageUnitsText"
+        app:layout_constraintTop_toBottomOf="@id/lastRefuelText" />
+
+    <TextView
+        android:id="@+id/mileageUsageUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:padding="3dp"
+        android:text="@string/latest_mileage_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/mileageUsageView"
+        app:layout_constraintEnd_toStartOf="@id/dividerUsagePriceLeft" />
+
+    <TextView
+        android:id="@+id/mileageUsageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="- -"
+        android:padding="3dp"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toStartOf="@id/mileageUsageUnitsText"
+        app:layout_constraintTop_toBottomOf="@id/lastRefuelText" />
+
+    <View
+        android:id="@+id/backgroundView"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="60dp"
+        android:background="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/littersUsageView" />
+
+    <TextView
+        android:id="@+id/inTotalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="3dp"
+        android:text="@string/in_total_caps"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/backgroundView" />
+
+    <TextView
+        android:id="@+id/totalPriceView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="- -"
+        android:paddingStart="@dimen/big_text_pad"
+        android:paddingEnd="@dimen/big_text_pad"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inTotalText" />
+
+    <TextView
+        android:id="@+id/totalPriceUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_text_pad"
+        android:text="PLN"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/totalPriceView"
+        app:layout_constraintStart_toEndOf="@id/totalPriceView" />
+
+    <View
+        android:id="@+id/dividerTotalPriceRight"
+        android:layout_width="2dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/totalPriceView"
+        app:layout_constraintStart_toEndOf="@id/totalPriceUnitsText"
+        app:layout_constraintTop_toBottomOf="@id/inTotalText" />
+
+    <TextView
+        android:id="@+id/totalLittersView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:hint="- -"
+        android:paddingStart="@dimen/big_text_pad"
+        android:paddingEnd="@dimen/big_text_pad"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintStart_toEndOf="@id/dividerTotalPriceRight"
+        app:layout_constraintTop_toBottomOf="@id/inTotalText" />
+
+    <TextView
+        android:id="@+id/totalLittersUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_text_pad"
+        android:text="L"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/totalLittersView"
+        app:layout_constraintStart_toEndOf="@id/totalLittersView" />
+
+    <View
+        android:id="@+id/dividerTotalPriceLeft"
+        android:layout_width="2dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="15dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/totalPriceView"
+        app:layout_constraintEnd_toStartOf="@id/totalPriceView"
+        app:layout_constraintTop_toBottomOf="@id/inTotalText" />
+
+    <TextView
+        android:id="@+id/totalMileageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="- -"
+        android:paddingStart="@dimen/big_text_pad"
+        android:paddingEnd="@dimen/big_text_pad"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toStartOf="@id/totalMileageUnitsText"
+        app:layout_constraintTop_toBottomOf="@id/inTotalText" />
+
+    <TextView
+        android:id="@+id/totalMileageUnitsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:padding="@dimen/small_text_pad"
+        android:text="KM"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/totalMileageView"
+        app:layout_constraintEnd_toStartOf="@id/dividerTotalPriceLeft" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
