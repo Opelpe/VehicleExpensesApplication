@@ -2,6 +2,7 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 
@@ -55,8 +56,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         presenter.onViewCreated();
 
         Button accountLoginButton = findViewById(R.id.accountLoginButton);
-//        Log.d(LOGIN_ACTIVITY_TAG, "\n Before on Account Button clicked");
         accountLoginButton.setOnClickListener(view -> {
+            Log.d(LOGIN_ACTIVITY_TAG, "Sign in with Google Button clicked");
                     presenter.onAccounButtonClicked();
                 });
 
