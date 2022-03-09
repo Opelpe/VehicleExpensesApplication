@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "389901073044-ad6rdtk1ke30mlm9saqv31sdi5o9vk8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pepe.vehicleexpensesapplication",
+            "certificate_hash": "06d814019a75d8820ff6433bb27e6195d6deb8e3"
+          }
+        },
+        {
           "client_id": "389901073044-ckf325a7scu0f2jlmirg46ekqutib06c.apps.googleusercontent.com",
           "client_type": 3
         }

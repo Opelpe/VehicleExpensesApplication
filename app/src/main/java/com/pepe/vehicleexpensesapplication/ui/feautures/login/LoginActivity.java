@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pepe.vehicleexpensesapplication.R;
-import com.pepe.vehicleexpensesapplication.data.SharedPrefsHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityLoginBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.account.NewAccountActivity;

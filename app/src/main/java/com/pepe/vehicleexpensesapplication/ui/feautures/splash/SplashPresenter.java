@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.pepe.vehicleexpensesapplication.data.SharedPrefsHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 
 public class SplashPresenter implements SplashContract.Presenter {

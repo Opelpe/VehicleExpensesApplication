@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pepe.vehicleexpensesapplication.R;
-import com.pepe.vehicleexpensesapplication.data.SharedPrefsHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityMyMainBinding;
 
 public class MyMainActivity extends AppCompatActivity {

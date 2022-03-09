@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/green"
-        android:text="NEXT"
+        android:text="@string/next_text"
         android:textColor="@color/white"
         android:textSize="@dimen/text_normal"
         app:layout_constraintEnd_toEndOf="@id/emailEditText"
