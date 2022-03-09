@@ -24,7 +24,16 @@
             android:exported="true" />
         <activity
             android:name=".ui.feautures.activity.MyMainActivity"
-            android:exported="true"/>
+            android:exported="true" />
+        <activity
+            android:name=".ui.feautures.login.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.feautures.account.NewAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.feautures.account.email.EmailAccountActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

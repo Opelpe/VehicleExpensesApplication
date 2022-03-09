@@ -16,5 +16,6 @@
     <string name="main_title">MAIN</string>
     <string name="history_title">HISTORY</string>
     <string name="settings_title">SETTINGS</string>
+    <string name="example_email_text">example@email.com</string>
 
 </resources>

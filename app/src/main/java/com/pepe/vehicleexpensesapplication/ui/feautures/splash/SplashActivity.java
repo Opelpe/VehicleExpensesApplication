@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pepe.vehicleexpensesapplication.databinding.ActivitySplashBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
+import com.pepe.vehicleexpensesapplication.ui.feautures.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity implements SplashContract.View {
 
@@ -40,6 +41,6 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     @Override
     public void startLoginActivity() {
-//        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }
