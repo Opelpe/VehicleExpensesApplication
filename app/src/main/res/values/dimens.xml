@@ -9,4 +9,5 @@
     <dimen name="big_text_pad">3dp</dimen>
     <dimen name="small_text_pad">3dp</dimen>
     <dimen name="edit_text_padding">15dp</dimen>
+    <dimen name="drawable_start_text_padding">5dp</dimen>
 </resources>

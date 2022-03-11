@@ -1,29 +1,35 @@
 <resources>
 
     <string name="app_name">VehicleExpensesApplication</string>
-    <string name="average_usage_caps">AVERAGE USAGE</string>
-    <string name="traveling_costs_caps">TRAVELING COSTS</string>
-    <string name="latest_refill_caps">LATEST REFILL:</string>
-    <string name="in_total_caps">IN TOTAL:</string>
-    <string name="average_usage_units">L/100KM</string>
-    <string name="traveling_costs_units">PLN/100KM</string>
-    <string name="latest_usage_units">L/100KM</string>
-    <string name="latest_price_units">PLN</string>
-    <string name="latest_mileage_units">KM</string>
+
     <string name="settings_text">Settings</string>
     <string name="history_text">History</string>
     <string name="main_text">Main</string>
+
     <string name="main_title">MAIN</string>
     <string name="history_title">HISTORY</string>
     <string name="settings_title">SETTINGS</string>
+    <string name="average_usage_title">AVERAGE USAGE</string>
+    <string name="traveling_costs_title">TRAVELING COSTS</string>
+    <string name="latest_refill_title">LATEST REFILL:</string>
+    <string name="in_total_title">IN TOTAL:</string>
+
+    <string name="traveling_costs_units">PLN/100KM</string>
+    <string name="usage_units">L/100KM</string>
+    <string name="price_units">PLN</string>
+    <string name="mileage_units">KM</string>
+
     <string name="example_email_text">example@email.com</string>
     <string name="next_text">NEXT</string>
     <string name="email_adress_text">EMAIL ADRESS:</string>
     <string name="password_text">PASSWORD:</string>
     <string name="welcome_back_text">Welcome back!</string>
     <string name="log_in_text">LOG IN</string>
-    <string name="log_in_button_text">LOG IN</string>
     <string name="new_user_name_text">NAME:</string>
-    <string name="create_button_text">CREATE</string>
+    <string name="create_text">CREATE</string>
+    <string name="data_null_small_text">---</string>
+    <string name="data_null_big_text">---,--</string>
+    <string name="date_null_text">---.---.------</string>
+    <string name="refil_units_text">L</string>
 
 </resources>

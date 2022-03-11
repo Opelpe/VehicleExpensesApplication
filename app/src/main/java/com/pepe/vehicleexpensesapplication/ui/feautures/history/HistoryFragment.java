@@ -11,7 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.appevents.suggestedevents.ViewOnClickListener;
+import com.pepe.vehicleexpensesapplication.data.adapters.HistoryAdapter;
+import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentHistoryBinding;
+
+import java.util.function.Consumer;
 
 public class HistoryFragment extends Fragment implements HistoryContract.View {
 
@@ -23,6 +28,8 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 //        presenter = new HistoryPresenter(this);
 //    }
     private HistoryContract.Presenter presenter;
+    private RecyclerView historyRecycler;
+    private View.OnClickListener historyListener;
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -35,6 +42,19 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+
+        historyRecycler = binding.historyRecyclerView;
+
+        historyListener = view -> {
+
+            Log.d(HISTORY_FRAGMENT_TAG, "text clicked");
+
+        };
+        historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        HistoryAdapter historyAdapter = new HistoryAdapter(historyListener);
+
+        historyRecycler.setAdapter(historyAdapter);
 
         return root;
     }

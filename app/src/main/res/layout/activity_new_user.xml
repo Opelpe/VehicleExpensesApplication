@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:backgroundTint="@color/green"
-        android:text="@string/create_button_text"
+        android:text="@string/create_text"
         android:textColor="@color/white"
         android:textSize="@dimen/text_normal"
         android:textStyle="bold"

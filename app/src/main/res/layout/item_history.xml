@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/leftBarImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        style="@style/green_background"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:paddingBottom="50dp"
+        android:src="@drawable/ic_baseline_local_gas_station_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/historyDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/date_null_text"
+        android:padding="3dp"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toStartOf="@id/historyDividerView"
+        app:layout_constraintStart_toEndOf="@id/leftBarImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/historyAverageUsageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/text_normal"
+        android:hint="@string/data_null_big_text"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toStartOf="@id/historyDividerView"
+        app:layout_constraintStart_toEndOf="@id/leftBarImageView"
+        app:layout_constraintTop_toBottomOf="@id/historyDateText" />
+
+    <TextView
+        android:id="@+id/historyAverageUsageUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/usage_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintEnd_toStartOf="@id/historyDividerView"
+        app:layout_constraintEnd_toEndOf="@id/historyAverageUsageText"
+        app:layout_constraintTop_toBottomOf="@id/historyAverageUsageText" />
+
+    <View
+        android:id="@+id/historyDividerView"
+        android:layout_width="2dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/black"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/historyAverageUsageUnits"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/historyMileageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:drawablePadding="@dimen/drawable_start_text_padding"
+        android:gravity="bottom"
+        android:hint="@string/data_null_small_text"
+        android:paddingStart="5dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="5dp"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toEndOf="@id/historyDividerView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:drawableStartCompat="@drawable/ic_baseline_emoji_transportation_24" />
+
+    <TextView
+        android:id="@+id/historyMileageUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:text="@string/mileage_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/historyMileageText"
+        app:layout_constraintStart_toEndOf="@id/historyMileageText" />
+
+    <TextView
+        android:id="@+id/historyAddedMileageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/data_null_small_text"
+        android:paddingStart="15dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="2dp"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toEndOf="@id/historyDividerView"
+        app:layout_constraintTop_toBottomOf="@id/historyMileageText" />
+
+    <TextView
+        android:id="@+id/historyAddedMileageUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mileage_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/historyAddedMileageText"
+        app:layout_constraintEnd_toStartOf="@id/historyMileageDividerView"
+        app:layout_constraintStart_toEndOf="@id/historyAddedMileageText" />
+
+    <View
+        android:id="@+id/historyMileageDividerView"
+        android:layout_width="2dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/historyExpenseText"
+        app:layout_constraintStart_toEndOf="@id/historyAddedMileageUnits"
+        app:layout_constraintTop_toTopOf="@id/historyMileageText"/>
+
+    <TextView
+        android:id="@+id/historyExpenseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/data_null_small_text"
+        android:paddingStart="15dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="2dp"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toEndOf="@id/historyMileageDividerView"
+        app:layout_constraintTop_toBottomOf="@id/historyMileageText" />
+
+    <TextView
+        android:id="@+id/historyExpenseUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/price_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@id/historyExpenseText"
+        app:layout_constraintStart_toEndOf="@id/historyExpenseText"/>
+
+    <ImageButton
+        android:id="@+id/deleteHistoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
