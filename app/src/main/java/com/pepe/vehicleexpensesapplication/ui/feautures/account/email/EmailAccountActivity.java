@@ -29,6 +29,14 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
 
     private EmailAccountContract.Presenter presenter;
 
+    private AlertDialog.Builder loadingEmailBuilder;
+    private AlertDialog.Builder existsEmailBuilder;
+    private AlertDialog.Builder newAccountBuilder;
+
+    private AlertDialog loadingEmailDialog;
+    private AlertDialog existsEmailDialog;
+    private AlertDialog newAccountDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +46,10 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
         setContentView(binding.getRoot());
 
         presenter = new EmailAccountPresenter(this, getApplicationContext());
+
+        loadingEmailBuilder = new AlertDialog.Builder(this);
+        existsEmailBuilder = new AlertDialog.Builder(this);
+        newAccountBuilder = new AlertDialog.Builder(this);
 
         EditText emailEditText = binding.emailEditText;
 
@@ -53,8 +65,6 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
             }
         });
 
-        FirebaseHelper firebaseHelper = FirebaseHelper.getInstance();
-
         checkEmailButton.setOnClickListener(view -> {
 
             Log.d(EMAIL_ACTIVITY_TAG, "Check Email Button CLICKED");
@@ -68,8 +78,6 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
                 Log.d(EMAIL_ACTIVITY_TAG, "Check Email Button Exception Captured: " + e);
             }
         });
-
-
     }
 
     @Override
@@ -94,26 +102,50 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
 
     @Override
     public void showLoadingEmailDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(R.layout.dialog_check_email);
-        AlertDialog dialogg = builder.create();
-        dialogg.show();
+        loadingEmailBuilder.setView(R.layout.dialog_check_email);
+        loadingEmailDialog = loadingEmailBuilder.create();
+        loadingEmailDialog.show();
     }
 
     @Override
     public void showDialogEmailExist(String enteredEmail) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(enteredEmail + " already exists")
-                .setTitle("EMAIL TAKEN");
-        AlertDialog dialogg = builder.create();
-        dialogg.show();
+        existsEmailBuilder.setView(R.layout.dialog_check_email)
+                .setMessage(enteredEmail + " have been already used!")
+                .setTitle("EMAIL ALREADY EXIST");
+        existsEmailDialog = existsEmailBuilder.create();
+        existsEmailDialog.show();
     }
 
     @Override
-    public void showCreateDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("CREATE NEW ACCOUNT");
-        AlertDialog dialogg = builder.create();
-        dialogg.show();
+    public void showNewAccountDialog() {
+        newAccountBuilder.setView(R.layout.dialog_check_email)
+                .setMessage("CREATE NEW ACCOUNT")
+                .setTitle("EMAIL DOESN'T EXIST");
+        newAccountDialog = newAccountBuilder.create();
+        newAccountDialog.show();
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+        if (loadingEmailDialog.isShowing()) {
+            loadingEmailDialog.cancel();
+        }
+
+    }
+
+    @Override
+    public void cancelExistedEmailDialog() {
+        if (existsEmailDialog.isShowing()) {
+            existsEmailDialog.cancel();
+        }
+
+    }
+
+    @Override
+    public void cancelNewAccountDialog() {
+        if (newAccountDialog.isShowing()) {
+            newAccountDialog.cancel();
+        }
+
     }
 }

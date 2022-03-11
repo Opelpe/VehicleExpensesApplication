@@ -1,8 +1,10 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.login;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 public class LoginPresenter implements LoginContract.Presenter{
 
@@ -12,15 +14,20 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     private FirebaseHelper firebaseHelper;
 
-    public LoginPresenter(LoginContract.View view){
+    private SharedPrefsHelper sharedPrefsHelper;
+
+    public LoginPresenter(LoginContract.View view, Context loginContext){
         this.view = view;
         firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = new SharedPrefsHelper(loginContext);
     }
 
     @Override
     public void onLocalLoginButtonClicked() {
 
         firebaseHelper.loginAnonymously();
+
+        sharedPrefsHelper.saveSignedUserEmail(firebaseHelper.getCurrentUser().getUid());
 
         view.startMainActivity();
     }

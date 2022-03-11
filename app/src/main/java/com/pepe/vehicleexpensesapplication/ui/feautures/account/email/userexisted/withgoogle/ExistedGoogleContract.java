@@ -15,6 +15,12 @@ public interface ExistedGoogleContract {
         void presenterStartActivityForResult(Intent signInIntent, int rcSignIn);
 
         void startMyMainActivity();
+
+        void showLoadingGoogleDialog();
+
+        void showToast(String toastMsg);
+
+        void cancelLoadingDialog();
     }
 
     interface Presenter{

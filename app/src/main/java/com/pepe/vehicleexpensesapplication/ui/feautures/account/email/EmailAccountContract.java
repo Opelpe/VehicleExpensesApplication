@@ -17,7 +17,13 @@ public interface EmailAccountContract {
 
         void showDialogEmailExist(String enteredEmail);
 
-        void showCreateDialog();
+        void showNewAccountDialog();
+
+        void cancelLoadingDialog();
+
+        void cancelExistedEmailDialog();
+
+        void cancelNewAccountDialog();
     }
 
     interface Presenter{

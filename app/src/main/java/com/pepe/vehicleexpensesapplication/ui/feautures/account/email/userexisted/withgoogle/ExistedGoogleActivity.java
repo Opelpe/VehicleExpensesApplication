@@ -1,10 +1,12 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withgoogle;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +16,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
+import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityExistedGoogleBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 
-public class ExistedGoogleActivity extends AppCompatActivity implements ExistedGoogleContract.View{
+public class ExistedGoogleActivity extends AppCompatActivity implements ExistedGoogleContract.View {
 
 
     private static final String EXISTED_GOOGLE_ACTIVITY_TAG = "EXISTED_GOOGLE_ACTIVITY";
@@ -31,6 +34,10 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 100;
 
+
+    private AlertDialog.Builder builder;
+    private AlertDialog dialogg;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +47,8 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
         setContentView(binding.getRoot());
 
         presenter = new ExistedGooglePresenter(this, getApplicationContext());
+
+        builder = new AlertDialog.Builder(this);
 
         aboutGoogleEmailInfoTextView = binding.aboutGoogleEmailInfoTextView;
         Button logInWithGoogleButton = binding.logInExistedUserGoogleButton;
@@ -56,8 +65,6 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
         logInWithGoogleButton.setOnClickListener(view -> {
             presenter.onlogInWithGoogleButtonClicked(mGoogleSignInClient, gso);
         });
-
-
     }
 
     @Override
@@ -88,5 +95,22 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
     @Override
     public void startMyMainActivity() {
         startActivity(new Intent(this, MyMainActivity.class));
+    }
+
+    @Override
+    public void showLoadingGoogleDialog() {
+        builder.setView(R.layout.dialog_check_email);
+        dialogg = builder.create();
+        dialogg.show();
+    }
+
+    @Override
+    public void showToast(String toastMsg) {
+        Toast.makeText(this, toastMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+        dialogg.cancel();
     }
 }

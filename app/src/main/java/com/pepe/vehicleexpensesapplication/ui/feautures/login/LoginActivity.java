@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         fireBaseHelper = FirebaseHelper.getInstance();
 
-        presenter = new LoginPresenter(this);
+        presenter = new LoginPresenter(this, getApplicationContext());
 
         sharedPrefsHelper = new SharedPrefsHelper(this);
 

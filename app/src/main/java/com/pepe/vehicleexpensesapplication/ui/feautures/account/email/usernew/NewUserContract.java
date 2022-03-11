@@ -14,6 +14,10 @@ public interface NewUserContract {
         void makeToast(String toastMsg);
 
         void startMyMainActivity();
+
+        void cancelLoadingDialog();
+
+        void showLoadingEmailDialog();
     }
     interface Presenter{
 

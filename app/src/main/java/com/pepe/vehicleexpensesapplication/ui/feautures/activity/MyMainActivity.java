@@ -27,7 +27,7 @@ public class MyMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(this);
-        Log.d(MAIN_ACTIVITY_TAG, "starting " + sharedPrefsHelper.getCheckboxStatus());
+        Log.d(MAIN_ACTIVITY_TAG, "starting \n chekbox status:" + sharedPrefsHelper.getCheckboxStatus() + "\n signed in email: " + sharedPrefsHelper.getSignedUserEmail());
 
 
         binding = ActivityMyMainBinding.inflate(getLayoutInflater());

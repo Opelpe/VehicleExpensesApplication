@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,5 +101,13 @@ public class NewAccountActivity extends AppCompatActivity implements NewAccountC
     @Override
     public void startMyMainActivity() {
         startActivity(new Intent(this, MyMainActivity.class));
+    }
+
+    @Override
+    public void showLoadingGoogleDialog(String googleEmail) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.dialog_check_email);
+        AlertDialog dialogg = builder.create();
+        dialogg.show();
     }
 }

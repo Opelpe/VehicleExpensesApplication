@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
-public class ExistedEmailPresenter implements ExistedEmailContract.Presenter{
+public class ExistedEmailPresenter implements ExistedEmailContract.Presenter {
 
     private static final String EX_EMAIL_PRESENTER_TAG = "EX_EMAIL_PRESENTER";
 
@@ -27,7 +27,7 @@ public class ExistedEmailPresenter implements ExistedEmailContract.Presenter{
 
     private FirebaseHelper firebaseHelper;
 
-    public ExistedEmailPresenter(ExistedEmailContract.View view, Context context){
+    public ExistedEmailPresenter(ExistedEmailContract.View view, Context context) {
         this.view = view;
         sharedPrefsHelper = new SharedPrefsHelper(context);
         firebaseHelper = FirebaseHelper.getInstance();
@@ -39,21 +39,36 @@ public class ExistedEmailPresenter implements ExistedEmailContract.Presenter{
     }
 
     @Override
-    public void onCheckPasswordEmailButtonClicekd(String password) {
-        Log.d(EX_EMAIL_PRESENTER_TAG, "onCheckPasswordEmailButtonClicekd();  \n handle password: " + password);
+    public void onCheckPasswordEmailButtonClicekd(String enteredPassword) {
+        Log.d(EX_EMAIL_PRESENTER_TAG, "onCheckPasswordEmailButtonClicekd();  \n handle password: " + enteredPassword);
 
-        String email = sharedPrefsHelper.getEnteredEmail();
 
-        firebaseHelper.loginWithEmailPasswordCallback(email, password).addOnSuccessListener(authResult -> {
+        String enteredEmail = sharedPrefsHelper.getEnteredEmail();
 
-            AuthResult result = authResult;
-            String currentemail = result.getUser().getEmail();
-            sharedPrefsHelper.saveEnteredEmail(currentemail);
-            view.startMyMainActivity();
-        }).addOnFailureListener(e -> {
-            view.showToast("something wrong");
-            Log.d(EX_EMAIL_PRESENTER_TAG, "EXCEPTION CAPTURED: \n" + e);
-        });
+        if (enteredPassword.trim().isEmpty()) {
+            view.makeToast("ENTER PASSWORD");
+        } else {
+            if (enteredPassword.trim().length() < 7) {
+                view.makeToast("PASSWORD MUST CONTAINS 7 CHARACTERS");
+            } else {
+                view.showLoadingEmailDialog();
+
+                firebaseHelper.loginWithEmailPasswordCallback(enteredEmail, enteredPassword).addOnSuccessListener(authResult -> {
+
+                    AuthResult result = authResult;
+                    String currentemail = result.getUser().getEmail();
+                    sharedPrefsHelper.saveSignedUserEmail(currentemail);
+                    view.startMyMainActivity();
+                    view.cancelLoadingDialog();
+
+                }).addOnFailureListener(e -> {
+                    view.showToast(e.getMessage());
+                    view.cancelLoadingDialog();
+                    Log.d(EX_EMAIL_PRESENTER_TAG, "EXCEPTION CAPTURED: \n" + e);
+                });
+            }
+        }
+
 
 
     }

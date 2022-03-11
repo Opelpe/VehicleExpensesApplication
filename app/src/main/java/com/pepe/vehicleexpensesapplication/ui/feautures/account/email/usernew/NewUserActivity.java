@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email.usernew;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -39,6 +40,9 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
     private ImageView passwordVisibilityImageView;
     private EditText newUserPasswordEditText;
 
+    private AlertDialog.Builder builder;
+    private AlertDialog dialogg;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
         setContentView(binding.getRoot());
 
         presenter = new NewUserPresenter(this, getApplicationContext());
+
+        builder = new AlertDialog.Builder(this);
 
         newUserEmailEditText = binding.newUserEmailEditText;
 
@@ -137,5 +143,17 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
     @Override
     public void startMyMainActivity() {
         startActivity(new Intent(this, MyMainActivity.class));
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+        dialogg.cancel();
+    }
+
+    @Override
+    public void showLoadingEmailDialog() {
+        builder.setView(R.layout.dialog_check_email);
+        dialogg = builder.create();
+        dialogg.show();
     }
 }

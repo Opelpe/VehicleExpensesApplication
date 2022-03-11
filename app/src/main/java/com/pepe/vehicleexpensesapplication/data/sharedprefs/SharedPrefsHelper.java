@@ -10,7 +10,8 @@ public class SharedPrefsHelper {
 
     public static final boolean START_CHECKBOX = false;
     public static final boolean GOOGLE_LOGGED = false;
-    public static final String EMAIL_LOGGED = null;
+    public static final String EMAIL_ENTERED = null;
+    public static final String EMAIL_SIGNED = null;
 
     private SharedPreferences preferences;
 
@@ -47,12 +48,23 @@ public class SharedPrefsHelper {
 
     public void saveEnteredEmail(String email) {
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(ConstantsPreferences.LOGGED_EMAIL, email);
+        editor.putString(ConstantsPreferences.ENETERED_EMAIL, email);
         editor.apply();
     }
 
     public String getEnteredEmail() {
-        Log.d(SHARED_PREFS_NAME, "\n LOGGED EMAIL: " + preferences.getString(ConstantsPreferences.LOGGED_EMAIL, EMAIL_LOGGED));
-        return preferences.getString(ConstantsPreferences.LOGGED_EMAIL, EMAIL_LOGGED);
+        Log.d(SHARED_PREFS_NAME, "\n ENTERED EMAIL: " + preferences.getString(ConstantsPreferences.ENETERED_EMAIL, EMAIL_ENTERED));
+        return preferences.getString(ConstantsPreferences.ENETERED_EMAIL, EMAIL_ENTERED);
+    }
+
+    public void saveSignedUserEmail(String savedEmail){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(ConstantsPreferences.SIGNED_USER_EMAIL, savedEmail);
+        editor.apply();
+    }
+
+    public String getSignedUserEmail(){
+        Log.d(SHARED_PREFS_NAME, "\n SIGNED EMAIL: " + preferences.getString(ConstantsPreferences.SIGNED_USER_EMAIL, EMAIL_SIGNED));
+        return preferences.getString(ConstantsPreferences.SIGNED_USER_EMAIL, EMAIL_SIGNED);
     }
 }

@@ -16,6 +16,7 @@ public interface NewAccountContract {
 
         void startMyMainActivity();
 
+        void showLoadingGoogleDialog(String googleEmail);
     }
     interface Presenter{
 

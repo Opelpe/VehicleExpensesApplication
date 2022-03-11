@@ -14,6 +14,12 @@ public interface ExistedEmailContract {
         void startMyMainActivity();
 
         void showToast(String toastMsg);
+
+        void showLoadingEmailDialog();
+
+        void makeToast(String toastMsg);
+
+        void cancelLoadingDialog();
     }
 
     interface  Presenter{

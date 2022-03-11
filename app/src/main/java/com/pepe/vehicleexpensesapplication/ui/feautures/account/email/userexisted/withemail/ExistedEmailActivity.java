@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withemail;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -34,6 +35,10 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
     private ImageView passwordVisibilityImageView;
     private EditText passwordEditText;
 
+
+    private AlertDialog.Builder builder;
+    private AlertDialog dialogg;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,8 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
         setContentView(binding.getRoot());
 
         presenter = new ExistedEmailPresenter(this, getApplicationContext());
+
+        builder = new AlertDialog.Builder(this);
 
         aboutEmailInfoTextView = binding.aboutEmailInfoTextView;
 
@@ -75,7 +82,6 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
             }catch (Exception e){
                 Log.d(EX_EMAIL_ACTIVITY_TAG, "checkPasswordEmailButton CLICKED: \n EXEPCTION CAPTURED: " +e);
             }
-
         });
     }
 
@@ -108,6 +114,23 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
     @Override
     public void showToast(String toastMsg) {
         Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showLoadingEmailDialog() {
+        builder.setView(R.layout.dialog_check_email);
+        dialogg = builder.create();
+        dialogg.show();
+    }
+
+    @Override
+    public void makeToast(String toastMsg) {
+        Toast.makeText(this, toastMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+        dialogg.cancel();
     }
 
 

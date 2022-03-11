@@ -1,14 +1,8 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
@@ -39,18 +33,19 @@ public class EmailAccountPresenter implements EmailAccountContract.Presenter {
             } else {
                 if (enteredEmail.trim().matches(emailPattern) && enteredEmail.trim().length() > 0) {
                     view.showLoadingEmailDialog();
-                    firebaseHelper.fetchSignInMethodsForEmail(enteredEmail)
+                    firebaseHelper.fetchSignInMethodsForEmailCallback(enteredEmail)
                             .addOnCompleteListener(task -> {
                                 boolean isRegister = task.getResult().getSignInMethods().isEmpty();
                                 if (!isRegister) {
 
                                     view.showDialogEmailExist(enteredEmail);
+                                    view.cancelLoadingDialog();
                                     Log.d(EMAIL_PRESENTER_TAG, "user existed ");
                                     logInExistedUser(enteredEmail.trim());
 
                                 } else {
-
-                                    view.showCreateDialog();
+                                    view.showNewAccountDialog();
+                                    view.cancelLoadingDialog();
                                     Log.d(EMAIL_PRESENTER_TAG, "user dont't exist, must create new account");
                                     loginNewUser(enteredEmail.trim());
                                 }
@@ -58,6 +53,7 @@ public class EmailAccountPresenter implements EmailAccountContract.Presenter {
 
                 } else {
                     if (!enteredEmail.trim().matches(emailPattern) && enteredEmail.trim().length() > 0) {
+
                         view.showToast("ENTER CORRECT EMAIL");
                     }
                 }

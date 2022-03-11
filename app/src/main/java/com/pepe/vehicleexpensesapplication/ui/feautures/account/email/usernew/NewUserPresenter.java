@@ -6,11 +6,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
@@ -65,15 +60,18 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                                     if (enteredPassword.trim().length() < 7) {
                                         view.makeToast("PASSWORD MUST CONTAINS 7 CHARACTERS");
                                     }else {
-                                        firebaseHelper.fetchSignInMethodsForEmail(enteredEmail).addOnCompleteListener(task -> {
+                                        firebaseHelper.fetchSignInMethodsForEmailCallback(enteredEmail).addOnCompleteListener(task -> {
                                             boolean emailExists = task.getResult().getSignInMethods().isEmpty();
 
+                                            view.showLoadingEmailDialog();
+
                                             if (!emailExists){
+                                                view.cancelLoadingDialog();
                                                 view.makeToast("EMAIL ALREADY EXISTS");
                                             }else {
                                                 firebaseHelper.createWithEmailPassword(enteredEmail, enteredPassword, enteredName);
                                                 view.startMyMainActivity();
-                                                sharedPrefsHelper.saveEnteredEmail(enteredEmail);
+                                                sharedPrefsHelper.saveSignedUserEmail(enteredEmail);
                                             }
                                         });
 
@@ -85,14 +83,6 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                     }
                 }
             }
-        }
-    }
-
-    private boolean passwordIsEmpty(String password) {
-        if (password.isEmpty()) {
-            return false;
-        } else {
-            return true;
         }
     }
 
