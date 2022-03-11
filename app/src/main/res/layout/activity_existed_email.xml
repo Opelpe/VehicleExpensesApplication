@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.feautures.account.email.userexisted.withemail.ExistedEmailActivity">
+
+    <TextView
+        android:id="@+id/welcomeBackTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingTop="30dp"
+        android:text="@string/welcome_back_text"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    /*-<TextView
+        android:id="@+id/aboutEmailInfoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="Adress has been already used. Enter password to this account."
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcomeBackTextView" />
+
+    <TextView
+        android:id="@+id/passwordJustText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingTop="50dp"
+        android:text="@string/password_text"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aboutEmailInfoTextView" />
+
+    <EditText
+        android:autofillHints="password"
+        android:id="@+id/existedPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:inputType="textPassword"
+        android:padding="@dimen/edit_text_padding"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordJustText" />
+
+    <ImageView
+        android:id="@+id/passwordVisibilityImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_visibility_24"
+        app:layout_constraintBottom_toBottomOf="@id/existedPasswordEditText"
+        app:layout_constraintEnd_toEndOf="@id/existedPasswordEditText"
+        app:layout_constraintTop_toTopOf="@id/existedPasswordEditText" />
+
+    <TextView
+        android:id="@+id/loginProblemTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingTop="20dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="Problem with log in? (click)"
+        android:textAlignment="viewStart"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/existedPasswordEditText"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/logInExistedUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/green"
+        android:text="@string/log_in_button_text"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/existedPasswordEditText"
+        app:layout_constraintTop_toBottomOf="@id/existedPasswordEditText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

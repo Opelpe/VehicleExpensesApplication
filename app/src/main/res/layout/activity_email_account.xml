@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="200dp"
-        android:text="EMAIL ADRESS:"
-        android:textColor="@color/green"
+        android:text="@string/email_adress_text"
         android:textSize="@dimen/text_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/emailAdresText" />
 
     <Button
-        android:id="@+id/newEmailButton"
+        android:id="@+id/checkEmailButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/green"

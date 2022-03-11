@@ -1,13 +1,29 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityEmailAccountBinding;
+import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withemail.ExistedEmailActivity;
+import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withgoogle.ExistedGoogleActivity;
+import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.usernew.NewUserActivity;
 
 public class EmailAccountActivity extends AppCompatActivity implements EmailAccountContract.View {
+
+    private static final String EMAIL_ACTIVITY_TAG = "EMAIL_ACTIVITY_TAG";
 
     private ActivityEmailAccountBinding binding;
 
@@ -21,7 +37,83 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
 
         setContentView(binding.getRoot());
 
-        presenter = new EmailAccountPresenter(this);
+        presenter = new EmailAccountPresenter(this, getApplicationContext());
 
+        EditText emailEditText = binding.emailEditText;
+
+        TextView emailAdresText = binding.emailAdresText;
+
+        Button checkEmailButton = binding.checkEmailButton;
+
+        emailEditText.setOnFocusChangeListener((view, b) -> {
+            if (b) {
+                emailAdresText.setTextColor(getResources().getColor(R.color.green));
+            } else {
+                emailAdresText.setTextColor(getResources().getColor(R.color.black));
+            }
+        });
+
+        FirebaseHelper firebaseHelper = FirebaseHelper.getInstance();
+
+        checkEmailButton.setOnClickListener(view -> {
+
+            Log.d(EMAIL_ACTIVITY_TAG, "Check Email Button CLICKED");
+            try {
+                String enteredEmail = emailEditText.getText().toString();
+
+                Log.d(EMAIL_ACTIVITY_TAG, "Check Email Button CLICKED, entered email: \n" + enteredEmail);
+
+                presenter.onCheckEmailButtonClicked(enteredEmail);
+            } catch (Exception e) {
+                Log.d(EMAIL_ACTIVITY_TAG, "Check Email Button Exception Captured: " + e);
+            }
+        });
+
+
+    }
+
+    @Override
+    public void startExistedUserActivity() {
+        startActivity(new Intent(this, ExistedEmailActivity.class));
+    }
+
+    @Override
+    public void startNewUserActivity() {
+        startActivity(new Intent(this, NewUserActivity.class));
+    }
+
+    @Override
+    public void showToast(String toastMsg) {
+        Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void startExistedGoogleActivity() {
+        startActivity(new Intent(this, ExistedGoogleActivity.class));
+    }
+
+    @Override
+    public void showLoadingEmailDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.dialog_check_email);
+        AlertDialog dialogg = builder.create();
+        dialogg.show();
+    }
+
+    @Override
+    public void showDialogEmailExist(String enteredEmail) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(enteredEmail + " already exists")
+                .setTitle("EMAIL TAKEN");
+        AlertDialog dialogg = builder.create();
+        dialogg.show();
+    }
+
+    @Override
+    public void showCreateDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CREATE NEW ACCOUNT");
+        AlertDialog dialogg = builder.create();
+        dialogg.show();
     }
 }

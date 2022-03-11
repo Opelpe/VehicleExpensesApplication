@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.feautures.account.email.usernew.NewUserActivity"
+    >
+
+
+    <TextView
+        android:id="@+id/justEmailAdressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/email_adress_text"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/newUserEmailEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:importantForAutofill="yes"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/justEmailAdressText"
+        app:layout_constraintTop_toBottomOf="@id/justEmailAdressText" />
+
+    <TextView
+        android:id="@+id/justNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/new_user_name_text"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toStartOf="@id/justEmailAdressText"
+        app:layout_constraintTop_toBottomOf="@id/newUserEmailEditText" />
+
+    <EditText
+        android:id="@+id/newUserNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:importantForAutofill="yes"
+        android:inputType="textPersonName"
+        android:textAllCaps="true"
+        android:padding="15dp"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/justEmailAdressText"
+        app:layout_constraintTop_toBottomOf="@id/justNameText" />
+
+    <TextView
+        android:id="@+id/justPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/password_text"
+        android:textSize="@dimen/text_normal"
+        app:layout_constraintStart_toStartOf="@id/justEmailAdressText"
+        app:layout_constraintTop_toBottomOf="@id/newUserNameEditText" />
+
+    <EditText
+        android:minLines="@integer/fui_min_password_length"
+        android:id="@+id/newUserPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:importantForAutofill="yes"
+        android:inputType="textPassword"
+        android:padding="15dp"
+        android:textSize="@dimen/text_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/justEmailAdressText"
+        app:layout_constraintTop_toBottomOf="@id/justPasswordText"
+        />
+
+    <ImageView
+        android:id="@+id/passwordVisibilityImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_visibility_24"
+        app:layout_constraintTop_toTopOf="@id/newUserPasswordEditText"
+        app:layout_constraintBottom_toBottomOf="@id/newUserPasswordEditText"
+        app:layout_constraintEnd_toEndOf="@id/newUserPasswordEditText"
+        android:padding="10dp"
+        android:clickable="true"
+        />
+
+    <Button
+        android:id="@+id/newUserSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="@color/green"
+        android:text="@string/create_button_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/newUserPasswordEditText"
+        app:layout_constraintTop_toBottomOf="@id/newUserPasswordEditText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

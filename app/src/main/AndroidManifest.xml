@@ -34,6 +34,15 @@
         <activity
             android:name=".ui.feautures.account.email.EmailAccountActivity"
             android:exported="true" />
+        <activity
+            android:name=".ui.feautures.account.email.usernew.NewUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.feautures.account.email.userexisted.withemail.ExistedEmailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.feautures.account.email.userexisted.withgoogle.ExistedGoogleActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

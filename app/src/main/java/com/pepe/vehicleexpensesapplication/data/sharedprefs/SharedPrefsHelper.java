@@ -10,6 +10,7 @@ public class SharedPrefsHelper {
 
     public static final boolean START_CHECKBOX = false;
     public static final boolean GOOGLE_LOGGED = false;
+    public static final String EMAIL_LOGGED = null;
 
     private SharedPreferences preferences;
 
@@ -21,7 +22,6 @@ public class SharedPrefsHelper {
     public void saveCheckboxStatus(boolean startCheckbox) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ConstantsPreferences.START_CHECKBOX_STATUS, startCheckbox);
-        editor.commit();
         editor.apply();
     }
 
@@ -35,7 +35,6 @@ public class SharedPrefsHelper {
     public void saveGoogleSignInCompleted(boolean successful) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ConstantsPreferences.GOOGLE_LOGGED_STATUS, successful);
-        editor.commit();
         editor.apply();
     }
 
@@ -46,4 +45,14 @@ public class SharedPrefsHelper {
         return preferences.getBoolean(ConstantsPreferences.GOOGLE_LOGGED_STATUS, GOOGLE_LOGGED);
     }
 
+    public void saveEnteredEmail(String email) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(ConstantsPreferences.LOGGED_EMAIL, email);
+        editor.apply();
+    }
+
+    public String getEnteredEmail() {
+        Log.d(SHARED_PREFS_NAME, "\n LOGGED EMAIL: " + preferences.getString(ConstantsPreferences.LOGGED_EMAIL, EMAIL_LOGGED));
+        return preferences.getString(ConstantsPreferences.LOGGED_EMAIL, EMAIL_LOGGED);
+    }
 }

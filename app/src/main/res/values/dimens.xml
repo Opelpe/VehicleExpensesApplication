@@ -8,4 +8,5 @@
     <dimen name="text_big">25sp</dimen>
     <dimen name="big_text_pad">3dp</dimen>
     <dimen name="small_text_pad">3dp</dimen>
+    <dimen name="edit_text_padding">15dp</dimen>
 </resources>

@@ -58,8 +58,9 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             Log.d(NACC_PRESENTER_TAG, "\n on handleSignInResult cmpleted TASK: " + account.getId());
 
-            firebaseHelper.authWithGoogle(account.getIdToken());
+            firebaseHelper.loginWithGoogle(account.getIdToken());
             sharedPrefsHelper.saveGoogleSignInCompleted(task.isSuccessful());
+            sharedPrefsHelper.saveEnteredEmail(account.getEmail());
 
             if (sharedPrefsHelper.getGoogleSignInCompleted()) {
                 view.startMyMainActivity();

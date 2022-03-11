@@ -18,5 +18,12 @@
     <string name="settings_title">SETTINGS</string>
     <string name="example_email_text">example@email.com</string>
     <string name="next_text">NEXT</string>
+    <string name="email_adress_text">EMAIL ADRESS:</string>
+    <string name="password_text">PASSWORD:</string>
+    <string name="welcome_back_text">Welcome back!</string>
+    <string name="log_in_text">LOG IN</string>
+    <string name="log_in_button_text">LOG IN</string>
+    <string name="new_user_name_text">NAME:</string>
+    <string name="create_button_text">CREATE</string>
 
 </resources>
