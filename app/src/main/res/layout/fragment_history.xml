@@ -17,15 +17,15 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingRefillButton"
+        style="@style/green_round_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="45dp"
-        style="@style/green_round_button"
         android:src="@drawable/ic_baseline_local_gas_station_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="NotSibling"/>
+        tools:ignore="NotSibling" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

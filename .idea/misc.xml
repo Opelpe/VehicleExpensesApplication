@@ -28,9 +28,21 @@
         <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/activity_splash.xml" value="0.1796875" />
         <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/dialog_check_email.xml" value="0.1796875" />
         <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/fragment_history.xml" value="0.12395833333333334" />
-        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/fragment_main.xml" value="0.35989583333333336" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/fragment_main.xml" value="0.33" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/fragment_settings.xml" value="0.35989583333333336" />
         <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/item_history.xml" value="0.5" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/item_settings.xml" value="0.35989583333333336" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/item_settings_data.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/item_settings_divider.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/item_settings_no_data.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/item_settings_with_data.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/toolbar_logo.xml" value="0.1796875" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/toolbar_settings.xml" value="0.35989583333333336" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/layout/toolbar_top.xml" value="0.1796875" />
         <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1796875" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/menu/history_nav_menu.xml" value="0.1796875" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/menu/my_main_nav_menu.xml" value="0.1796875" />
+        <entry key="..\:/Users/dzoba/AndroidStudioProjects/VehicleExpensesApplication/app/src/main/res/menu/top_navigation_menu.xml" value="0.1796875" />
       </map>
     </option>
   </component>

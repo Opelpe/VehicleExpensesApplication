@@ -4,8 +4,12 @@ public interface HistoryContract {
 
     interface View{
 
+        void setSynchornizationImageViewOff();
+
+        void setSynchornizationImageViewOn();
     }
 
     interface  Presenter{
+        void onViewCreated();
     }
 }

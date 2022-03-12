@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -13,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,7 +71,13 @@ public class FirebaseHelper {
     }
 
     public FirebaseUser getCurrentUser() {
+        Log.d(FIREBASE_HELPER_TAG, FIREBASE_AUTH_TAG + " get CURRENT USER START" + fAuth.getCurrentUser());
         return fAuth.getCurrentUser();
+    }
+
+    public String getUid(){
+        Log.d(FIREBASE_HELPER_TAG, FIREBASE_AUTH_TAG + " get UID START" + fAuth.getUid());
+        return fAuth.getUid();
     }
 
     private static FirebaseHelper instance = null;
@@ -119,8 +125,10 @@ public class FirebaseHelper {
     }
 
     public Task<AuthResult> loginWithEmailPasswordCallback(String email, String password) {
+
         return fAuth.signInWithEmailAndPassword(email, password);
     }
+
 
     public Task<AuthResult> loginWithGoogleCallback(AuthCredential authCredential) {
         return fAuth.signInWithCredential(authCredential);
@@ -147,6 +155,10 @@ public class FirebaseHelper {
     public DocumentReference firestoreProvidersCallback(String email) {
         return firestore.collection(ConstantsPreferences.COLLECTION_PROVIDERS)
                 .document(email);
+    }
+
+    public CollectionReference firestoreUIDProvidersCallback() {
+        return firestore.collection(ConstantsPreferences.COLLECTION_PROVIDERS);
     }
 
 //    public void loginWithGoogle(String idToken) {

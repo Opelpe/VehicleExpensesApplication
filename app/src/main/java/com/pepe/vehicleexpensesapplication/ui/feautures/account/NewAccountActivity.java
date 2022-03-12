@@ -95,6 +95,8 @@ public class NewAccountActivity extends AppCompatActivity implements NewAccountC
 
     @Override
     public void presenterStartActivityForResult(Intent signInIntent, int rcSignIn) {
+//        Log.d(NACC_ACTIVITY_TAG, "\n presenterStartActivityForResult signInIntent: " +  signInIntent.getAction().isEmpty());
+
         startActivityForResult(signInIntent, rcSignIn);
     }
 

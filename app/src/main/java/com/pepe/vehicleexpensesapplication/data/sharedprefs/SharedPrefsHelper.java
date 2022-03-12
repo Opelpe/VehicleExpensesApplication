@@ -20,6 +20,7 @@ public class SharedPrefsHelper {
         preferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
+
     public void saveCheckboxStatus(boolean startCheckbox) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ConstantsPreferences.START_CHECKBOX_STATUS, startCheckbox);

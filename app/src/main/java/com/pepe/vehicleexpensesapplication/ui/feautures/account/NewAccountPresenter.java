@@ -79,7 +79,6 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
             firebaseHelper.loginWithGoogleCallback(credential)
                     .addOnSuccessListener(authResult -> {
 
-
                         sharedPrefsHelper.saveGoogleSignInCompleted(true);
 
                         FirebaseUser user = authResult.getUser();
