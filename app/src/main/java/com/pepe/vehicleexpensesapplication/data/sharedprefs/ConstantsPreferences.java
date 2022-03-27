@@ -17,5 +17,11 @@ public class ConstantsPreferences {
     public static final String GOOGLE_LOGGED_STATUS = "GOOGLE_LOGGED_STATUS";
     public static final String ENETERED_EMAIL = "ENETERED_EMAIL";
     public static final String SIGNED_USER_EMAIL = "SIGNED_USER_EMAIL";
+    public static final String IS_USER_ANONYMOUS = "IS_USER_ANONYMOUS";
+    public static final String SIGNED_USER_ID = "SIGNED_USER_ID";
+    public static final String W_EMAIL_SIGNED_EMAIL = "W_EMAIL_SIGNED_EMAIL";
+    public static final String W_GOOGLE_SIGNED_EMAIL = "W_GOOGLE_SIGNED_EMAIL";
+
+    public static final int RC_SIGN_IN = 100;
 
 }

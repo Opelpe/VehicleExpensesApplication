@@ -4,7 +4,7 @@ public interface LoginContract {
 
     interface View{
 
-        void startMainActivity();
+        void startMyMainActivity();
 
         void startNewAccountActivity();
     }
@@ -15,6 +15,8 @@ public interface LoginContract {
 
         void onViewCreated();
 
-        void onAccounButtonClicked();
+        void onAccountButtonClicked();
+
+        void isCheckboxChecked(boolean checked);
     }
 }

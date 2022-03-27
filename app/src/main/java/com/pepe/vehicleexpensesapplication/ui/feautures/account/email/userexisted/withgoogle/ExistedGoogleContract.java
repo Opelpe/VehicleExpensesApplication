@@ -27,7 +27,7 @@ public interface ExistedGoogleContract {
 
         void onViewCreated();
 
-        void onlogInWithGoogleButtonClicked(GoogleSignInClient mGoogleSignInClient, GoogleSignInOptions gso);
+        void onlogInWithGoogleButtonClicked(GoogleSignInClient mGoogleSignInClient);
 
         void handleSignInResult(Task<GoogleSignInAccount> task);
     }

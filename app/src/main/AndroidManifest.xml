@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pepe.vehicleexpensesapplication">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,9 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+
         <activity
             android:name=".ui.feautures.activity.MyMainActivity"
             android:exported="true" />
@@ -42,6 +43,12 @@
             android:exported="true" />
         <activity
             android:name=".ui.feautures.account.email.userexisted.withgoogle.ExistedGoogleActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.feautures.refill.RefillActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.feautures.logout.LogOutActivity"
             android:exported="true" />
     </application>
 

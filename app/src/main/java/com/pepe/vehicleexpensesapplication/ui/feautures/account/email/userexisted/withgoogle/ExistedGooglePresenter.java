@@ -24,7 +24,7 @@ import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter{
+public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
 
     private static final String EXISTED_GOOGLE_PRESENTER_TAG = "EXISTED_GOOGLE_PRESENTER";
 
@@ -34,14 +34,12 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter{
 
     private FirebaseHelper firebaseHelper;
 
-    private static final int RC_SIGN_IN = 100;
     private GoogleSignInClient googleSignInClient;
-    private GoogleSignInOptions googleSignInOptions;
 
-    public ExistedGooglePresenter(ExistedGoogleContract.View view, Context context){
+    public ExistedGooglePresenter(ExistedGoogleContract.View view, Context context) {
         this.view = view;
         sharedPrefsHelper = new SharedPrefsHelper(context);
-        firebaseHelper = FirebaseHelper.getInstance();
+        firebaseHelper = FirebaseHelper.getInstance(context);
 
     }
 
@@ -51,37 +49,37 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter{
     }
 
     @Override
-    public void onlogInWithGoogleButtonClicked(GoogleSignInClient mGoogleSignInClient, GoogleSignInOptions gso) {
+    public void onlogInWithGoogleButtonClicked(GoogleSignInClient mGoogleSignInClient) {
         googleSignInClient = mGoogleSignInClient;
-        googleSignInOptions = gso;
 
         signIn();
     }
 
     @Override
     public void handleSignInResult(Task<GoogleSignInAccount> task) {
-        Log.d(EXISTED_GOOGLE_PRESENTER_TAG, "\n on handleSignInResult START");
+
         try {
+            view.showLoadingGoogleDialog();
             GoogleSignInAccount account = task.getResult(ApiException.class);
-            Log.d(EXISTED_GOOGLE_PRESENTER_TAG, "\n on handleSignInResult cmpleted TASK: " + account.getId());
+            Log.d(EXISTED_GOOGLE_PRESENTER_TAG, "\n on handleSignInResult, completed TASK, GOOGLE account ID: " + account.getId());
 
             AuthCredential credential = firebaseHelper.getAuthCredential(account.getIdToken());
 
             firebaseHelper.loginWithGoogleCallback(credential)
                     .addOnSuccessListener(authResult -> {
 
-                        sharedPrefsHelper.saveGoogleSignInCompleted(true);
-
                         FirebaseUser user = authResult.getUser();
-
-                        sharedPrefsHelper.saveSignedUserEmail(user.getEmail());
-
-                        view.showLoadingGoogleDialog();
-
                         String uID = user.getUid();
                         String email = user.getEmail();
                         String displayedName = user.getDisplayName();
                         String provider = credential.getProvider();
+
+                        sharedPrefsHelper.saveIsAnonymous(false);
+                        sharedPrefsHelper.saveSignedUserEmail(email);
+                        sharedPrefsHelper.saveGoogleSignInCompleted(true);
+                        sharedPrefsHelper.saveSignWGoogleEmail(email);
+                        sharedPrefsHelper.saveSignedUserID(uID);
+                        sharedPrefsHelper.saveSignWEmailEmail(null);
 
                         if (authResult.getAdditionalUserInfo().isNewUser()) {
 
@@ -93,26 +91,29 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter{
 
                             firebaseHelper.firestoreUsersUIDCallback(uID)
                                     .set(userMap)
-                                    .addOnCompleteListener(task1 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG + "\n successfully added to Users collection by GoogleSignIn, Email: " + email));
-
+                                    .addOnCompleteListener(task1 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
+                                            + "\n successfully added to Users collection by GoogleSignIn, Email: " + email));
 
                             Map<String, Object> providerMap = new HashMap<>();
                             providerMap.put("Provider", provider);
                             providerMap.put("Email", email);
                             providerMap.put("UID", uID);
 
-                            view.startMyMainActivity();
-
                             firebaseHelper.firestoreProvidersCallback(email)
                                     .set(providerMap)
-                                    .addOnCompleteListener(task12 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG + " success GOOGLE providers")).addOnFailureListener(e -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG + "GOOGLE providers something wrong " + e));
-                        } else {
-                            Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIREBASE_AUTH_TAG + "\n signInWithCredential, EXISTED USER: " + authResult.getUser().getEmail());
+                                    .addOnCompleteListener(task12 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
+                                            + " success with saving GOOGLE providers"))
+                                    .addOnFailureListener(e -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
+                                            + "GOOGLE providers something wrong with saving, FAILURE: " + e));
 
+                            view.cancelLoadingDialog();
+                            view.showToast("NEW ACCOUNT CREATED \n" + email);
                             view.startMyMainActivity();
+                        } else {
 
                             user.reauthenticate(credential).addOnCompleteListener(task12 -> {
-                                Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIREBASE_AUTH_TAG + "\n signInWithCredential, EXISTED USER changed to GOOGLE USER");
+                                Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIREBASE_AUTH_TAG
+                                        + "\n signInWithCredential, EXISTED USER changed to GOOGLE USER");
 
                                 Map<String, Object> providerMap = new HashMap<>();
                                 providerMap.put("Provider", provider);
@@ -120,32 +121,33 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter{
                                 providerMap.put("UID", uID);
 
                                 firebaseHelper.firestoreProvidersCallback(email)
-                                        .set(providerMap)
-                                        .addOnCompleteListener(task121 -> {
+                                        .set(providerMap);
 
-                                        });
+                                view.cancelLoadingDialog();
+                                view.showToast("SUCCESSFULLY LOGGED IN \n" + email);
+                                view.startMyMainActivity();
                             });
                         }
 
-
                     }).addOnFailureListener(e -> {
 
-                        view.cancelLoadingDialog();
+                view.cancelLoadingDialog();
 
-                        view.showToast(e.getMessage());
+                view.showToast(e.getMessage());
 
-                        sharedPrefsHelper.saveGoogleSignInCompleted(false);
+                sharedPrefsHelper.saveSignedUserEmail(null);
+                sharedPrefsHelper.saveGoogleSignInCompleted(false);
+                sharedPrefsHelper.saveSignWGoogleEmail(null);
 
-                        Log.w(EXISTED_GOOGLE_PRESENTER_TAG, "signInResult:failed code = " + e);
-                    });
-
+                Log.w(EXISTED_GOOGLE_PRESENTER_TAG, "signInResult: failed code = " + e);
+            });
         } catch (ApiException e) {
-            Log.w(EXISTED_GOOGLE_PRESENTER_TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.w(EXISTED_GOOGLE_PRESENTER_TAG, "signInResult: EXCEPTION captured = " + e.getStatusCode());
         }
     }
 
     private void signIn() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
-        view.presenterStartActivityForResult(signInIntent, RC_SIGN_IN);
+        view.presenterStartActivityForResult(signInIntent, ConstantsPreferences.RC_SIGN_IN);
     }
 }

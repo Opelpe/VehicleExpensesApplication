@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.ConstantsPreferences;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityExistedGoogleBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 
@@ -31,12 +32,10 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
 
     private TextView aboutGoogleEmailInfoTextView;
 
-    private GoogleSignInClient mGoogleSignInClient;
-    private static final int RC_SIGN_IN = 100;
-
+    private GoogleSignInClient googleSignInClient;
 
     private AlertDialog.Builder builder;
-    private AlertDialog dialogg;
+    private AlertDialog googleLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,15 +54,15 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
 
         presenter.onViewCreated();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         logInWithGoogleButton.setOnClickListener(view -> {
-            presenter.onlogInWithGoogleButtonClicked(mGoogleSignInClient, gso);
+            presenter.onlogInWithGoogleButtonClicked(googleSignInClient);
         });
     }
 
@@ -71,10 +70,11 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(EXISTED_GOOGLE_ACTIVITY_TAG, " on Activity RESULT START, requested code" + requestCode + " RC_Sign IN : " + RC_SIGN_IN);
+        googleSignInClient.signOut();
 
-        if (requestCode == RC_SIGN_IN) {
-            Log.d(EXISTED_GOOGLE_ACTIVITY_TAG, "\n on Activity IF requesteCode" + requestCode);
+        Log.d(EXISTED_GOOGLE_ACTIVITY_TAG, " on Activity RESULT START, requested code" + requestCode + " RC_Sign IN : " + ConstantsPreferences.RC_SIGN_IN);
+
+        if (requestCode == ConstantsPreferences.RC_SIGN_IN) {
 
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
@@ -95,13 +95,17 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
     @Override
     public void startMyMainActivity() {
         startActivity(new Intent(this, MyMainActivity.class));
+        if (googleLoadingDialog != null){
+            if (googleLoadingDialog.isShowing()) {
+                googleLoadingDialog.cancel();
+            }}
     }
 
     @Override
     public void showLoadingGoogleDialog() {
         builder.setView(R.layout.dialog_check_email);
-        dialogg = builder.create();
-        dialogg.show();
+        googleLoadingDialog = builder.create();
+        googleLoadingDialog.show();
     }
 
     @Override
@@ -111,6 +115,6 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
 
     @Override
     public void cancelLoadingDialog() {
-        dialogg.cancel();
+        googleLoadingDialog.cancel();
     }
 }

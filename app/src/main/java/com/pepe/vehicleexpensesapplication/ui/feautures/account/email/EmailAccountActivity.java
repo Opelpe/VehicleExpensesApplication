@@ -86,6 +86,11 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
     }
 
     @Override
+    public void startExistedGoogleActivity() {
+        startActivity(new Intent(this, ExistedGoogleActivity.class));
+    }
+
+    @Override
     public void startNewUserActivity() {
         startActivity(new Intent(this, NewUserActivity.class));
     }
@@ -93,11 +98,6 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
     @Override
     public void showToast(String toastMsg) {
         Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void startExistedGoogleActivity() {
-        startActivity(new Intent(this, ExistedGoogleActivity.class));
     }
 
     @Override
@@ -127,25 +127,36 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
 
     @Override
     public void cancelLoadingDialog() {
+
+        if (loadingEmailDialog != null){
         if (loadingEmailDialog.isShowing()) {
             loadingEmailDialog.cancel();
-        }
+        }}
 
     }
 
     @Override
     public void cancelExistedEmailDialog() {
+        if (existsEmailDialog != null){
         if (existsEmailDialog.isShowing()) {
             existsEmailDialog.cancel();
-        }
+        }}
 
     }
 
     @Override
     public void cancelNewAccountDialog() {
+        if (newAccountDialog != null){
         if (newAccountDialog.isShowing()) {
             newAccountDialog.cancel();
-        }
+        }}
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
 
     }
 }

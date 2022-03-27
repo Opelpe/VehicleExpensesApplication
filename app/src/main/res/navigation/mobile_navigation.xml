@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/navigation_main"
         android:name="com.pepe.vehicleexpensesapplication.ui.feautures.main.MainFragment"
-        android:label="@string/main_title"
+        android:label="MAIN"
         tools:layout="@layout/fragment_main"
         />
 
@@ -18,6 +18,12 @@
         android:name="com.pepe.vehicleexpensesapplication.ui.feautures.history.HistoryFragment"
         android:label="@string/history_title"
         tools:layout="@layout/fragment_history"
+        />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.pepe.vehicleexpensesapplication.ui.feautures.settings.SettingsFragment"
+        tools:layout="@layout/fragment_settings"
         />
 
 

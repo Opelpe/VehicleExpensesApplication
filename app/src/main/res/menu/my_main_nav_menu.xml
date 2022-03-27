@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_synchronize"
+        android:icon="@drawable/ic_baseline_cloud_off_24"
+        android:title="SYNCHRONIZE"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:icon="@drawable/ic_baseline_supervised_user_circle_24"
+        android:id="@+id/action_change_google_account"
+        android:title="CHANGE GOOGLE ACCOUNT"
+        app:showAsAction="ifRoom" />
+
+
+
+</menu>

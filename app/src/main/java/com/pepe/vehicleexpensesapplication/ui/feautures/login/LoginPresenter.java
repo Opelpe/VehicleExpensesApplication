@@ -3,6 +3,7 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.login;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.auth.api.Auth;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
@@ -18,18 +19,24 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     public LoginPresenter(LoginContract.View view, Context loginContext){
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance();
+        firebaseHelper = FirebaseHelper.getInstance(loginContext);
         sharedPrefsHelper = new SharedPrefsHelper(loginContext);
     }
 
     @Override
     public void onLocalLoginButtonClicked() {
 
-        firebaseHelper.loginAnonymously();
+        if (!sharedPrefsHelper.getIsAnonymous()){
 
-        sharedPrefsHelper.saveSignedUserEmail(firebaseHelper.getCurrentUser().getUid());
-
-        view.startMainActivity();
+            firebaseHelper.loginAnonymously();
+            sharedPrefsHelper.saveIsAnonymous(true);
+            view.startMyMainActivity();
+        }else{
+            sharedPrefsHelper.saveIsAnonymous(true);
+            sharedPrefsHelper.saveSignWEmailEmail(null);
+            sharedPrefsHelper.saveSignWGoogleEmail(null);
+            view.startMyMainActivity();
+        }
     }
 
     @Override
@@ -38,7 +45,12 @@ public class LoginPresenter implements LoginContract.Presenter{
     }
 
     @Override
-    public void onAccounButtonClicked() {
+    public void isCheckboxChecked(boolean checked) {
+        sharedPrefsHelper.saveCheckboxStatus(checked);
+    }
+
+    @Override
+    public void onAccountButtonClicked() {
         view.startNewAccountActivity();
     }
 }
