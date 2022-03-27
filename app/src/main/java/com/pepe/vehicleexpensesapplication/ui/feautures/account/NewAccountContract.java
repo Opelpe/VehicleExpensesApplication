@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account;
 
+import android.content.Context;
 import android.content.Intent;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -16,14 +17,19 @@ public interface NewAccountContract {
 
         void startMyMainActivity();
 
-        void showLoadingGoogleDialog(String googleEmail);
+        void showLoadingGoogleDialog();
+
+        void cancelLoadingDialog();
+
+        void showToast(String toastMsg);
     }
     interface Presenter{
 
-        void onGoogleButtonClicked(GoogleSignInClient mGoogleSignInClient, GoogleSignInOptions gso);
+        void onGoogleButtonClicked(GoogleSignInClient mGoogleSignInClient);
 
         void onEmailSignButtonClicked();
 
         void handleSignInResult(Task<GoogleSignInAccount> task);
+
     }
 }

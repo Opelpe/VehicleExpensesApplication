@@ -26,7 +26,6 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
 
     private static final String EX_EMAIL_ACTIVITY_TAG = "EX_EMAIL_ACTIVITY";
 
-
     private ActivityExistedEmailBinding binding;
 
     private ExistedEmailContract.Presenter presenter;
@@ -96,6 +95,7 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
         PasswordTransformationMethod show = PasswordTransformationMethod.getInstance();
         passwordVisibilityImageView.setImageResource(R.drawable.ic_baseline_visibility_24);
         passwordEditText.setTransformationMethod(show);
+        passwordEditText.setSelection(passwordEditText.getText().length());
     }
 
     @Override
@@ -104,6 +104,7 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
         HideReturnsTransformationMethod hide = HideReturnsTransformationMethod.getInstance();
         passwordVisibilityImageView.setImageResource(R.drawable.ic_baseline_visibility_off_24);
         passwordEditText.setTransformationMethod(hide);
+        passwordEditText.setSelection(passwordEditText.getText().length());
     }
 
     @Override
@@ -112,8 +113,12 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
     }
 
     @Override
-    public void showToast(String toastMsg) {
-        Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+    public void showToast(String toastMsg, boolean lenghtLong) {
+        if (lenghtLong){
+            Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, toastMsg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -124,14 +129,8 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
     }
 
     @Override
-    public void makeToast(String toastMsg) {
-        Toast.makeText(this, toastMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void cancelLoadingDialog() {
         dialogg.cancel();
     }
-
 
 }

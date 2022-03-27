@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.history;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,17 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.facebook.appevents.suggestedevents.ViewOnClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.adapters.HistoryAdapter;
-import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentHistoryBinding;
-
-import java.util.function.Consumer;
+import com.pepe.vehicleexpensesapplication.ui.feautures.refill.RefillActivity;
 
 public class HistoryFragment extends Fragment implements HistoryContract.View {
 
@@ -38,7 +38,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     private RecyclerView historyRecycler;
     private View.OnClickListener historyListener;
 
-    private Menu optionMenu;
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -47,26 +46,19 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        presenter = new HistoryPresenter(this);
+        presenter = new HistoryPresenter(this, getContext());
 
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        setHasOptionsMenu(true);
+
         presenter.onViewCreated();
 
-        try {
-            ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-            if (!bar.isShowing()) {
-                Log.d(HISTORY_FRAGMENT_TAG, "getsuppotrtedActionBar START");
-                bar.show();
-                bar.setIcon(R.drawable.ic_baseline_local_gas_station_24);
-            }
-        } catch (Exception e) {
-            Log.d(HISTORY_FRAGMENT_TAG, "getsuppotrtedActionBar EXCEPTION CAPTURED: " + e);
-        }
-
-        setHasOptionsMenu(true);
+        FloatingActionButton floatingRefilButton = binding.floatingRefillButton;
+        floatingRefilButton.setOnClickListener(view -> {
+            presenter.onFloatingRefillButtonClicked();
+        });
 
         historyRecycler = binding.historyRecyclerView;
 
@@ -83,10 +75,12 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         return root;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_synchronize:
+            case R.id.action_synchronize_history:
+
                 Toast.makeText(getContext(), "synchronize data", Toast.LENGTH_SHORT).show();
                 return true;
 
@@ -99,9 +93,17 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        optionMenu = menu;
-
         inflater.inflate(R.menu.history_nav_menu, menu);
+
+        boolean cloudStatus = presenter.getSynchronizationStatus();
+
+        if (!cloudStatus){
+            Log.d(HISTORY_FRAGMENT_TAG, "on Create Options Menu : CLOUD STATUS OFF: " + cloudStatus );
+            menu.findItem(R.id.action_synchronize_history).setIcon(R.drawable.ic_baseline_cloud_off_24);
+        }else {
+            Log.d(HISTORY_FRAGMENT_TAG, "on Create Options Menu : CLOUD STATUS ON: " + cloudStatus);
+            menu.findItem(R.id.action_synchronize_history).setIcon(R.drawable.ic_baseline_cloud_queue_24);
+        }
     }
 
     @Override
@@ -111,12 +113,26 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     }
 
     @Override
-    public void setSynchornizationImageViewOff() {
-        optionMenu.findItem(R.id.action_synchronize).setIcon(R.drawable.ic_baseline_cloud_off_24);
+    public void setHistoryFragmentToolbar() {
+
+        Toolbar toolbar = binding.getRoot().findViewById(R.id.historyFragmentToolbar);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        try {
+            ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            bar.setLogo(R.drawable.ic_baseline_local_gas_station_24);
+            bar.setTitle("HISTORY");
+            bar.show();
+
+        } catch (Exception e) {
+            Log.d(HISTORY_FRAGMENT_TAG, "getsuppotrtedActionBar EXCEPTION CAPTURED: " + e);
+        }
+
     }
 
     @Override
-    public void setSynchornizationImageViewOn() {
-        optionMenu.findItem(R.id.action_synchronize).setIcon(R.drawable.ic_baseline_cloud_queue_24);
+    public void startRefilActivity() {
+        startActivity(new Intent(getContext(), RefillActivity.class));
     }
 }

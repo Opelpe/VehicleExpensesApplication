@@ -1,17 +1,13 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email.usernew;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,13 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityNewUserBinding;
+import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withemail.ExistedEmailActivity;
+import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withgoogle.ExistedGoogleActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
-
-import java.time.Duration;
 
 public class NewUserActivity extends AppCompatActivity implements NewUserContract.View {
 
@@ -40,9 +35,10 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
     private ImageView passwordVisibilityImageView;
     private EditText newUserPasswordEditText;
 
-    private AlertDialog.Builder builder;
-    private AlertDialog dialogg;
-
+    private AlertDialog.Builder loadingDialogBuilder;
+    private AlertDialog loadingDialog;
+    private AlertDialog.Builder existedEmailDialogBuilder;
+    private AlertDialog existedEmailDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,11 +50,12 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
 
         presenter = new NewUserPresenter(this, getApplicationContext());
 
-        builder = new AlertDialog.Builder(this);
+        loadingDialogBuilder = new AlertDialog.Builder(this);
+        existedEmailDialogBuilder = new AlertDialog.Builder(this);
 
         newUserEmailEditText = binding.newUserEmailEditText;
 
-        presenter.setEmailEditText();
+        presenter.onViewCreated();
 
         EditText newUserNameEditText = binding.newUserNameEditText;
         newUserPasswordEditText = binding.newUserPasswordEditText;
@@ -110,7 +107,6 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
                 Log.d(NEW_USER_ACTIVITY_TAG, "NEW USER SAVE BUTTON CLICKED EXCEPTION CAPTURED: " + e);
             }
         });
-
     }
 
     @Override
@@ -124,6 +120,7 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
         HideReturnsTransformationMethod hide = HideReturnsTransformationMethod.getInstance();
         passwordVisibilityImageView.setImageResource(R.drawable.ic_baseline_visibility_off_24);
         newUserPasswordEditText.setTransformationMethod(hide);
+        newUserPasswordEditText.setSelection(newUserPasswordEditText.getText().length());
     }
 
     @Override
@@ -132,7 +129,7 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
         PasswordTransformationMethod show = PasswordTransformationMethod.getInstance();
         passwordVisibilityImageView.setImageResource(R.drawable.ic_baseline_visibility_24);
         newUserPasswordEditText.setTransformationMethod(show);
-
+        newUserPasswordEditText.setSelection(newUserPasswordEditText.getText().length());
     }
 
     @Override
@@ -141,19 +138,40 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
     }
 
     @Override
-    public void startMyMainActivity() {
-        startActivity(new Intent(this, MyMainActivity.class));
-    }
-
-    @Override
     public void cancelLoadingDialog() {
-        dialogg.cancel();
+        loadingDialog.cancel();
     }
 
     @Override
     public void showLoadingEmailDialog() {
-        builder.setView(R.layout.dialog_check_email);
-        dialogg = builder.create();
-        dialogg.show();
+        loadingDialogBuilder.setView(R.layout.dialog_check_email);
+        loadingDialog = loadingDialogBuilder.create();
+        loadingDialog.show();
     }
+
+    @Override
+    public void showExistedAccountDialog(String enteredEmail) {
+        existedEmailDialogBuilder.setTitle("EMAIL EXISTS");
+        existedEmailDialogBuilder.setMessage(" \n" + enteredEmail + " do you want to log in?");
+        existedEmailDialogBuilder.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.cancel());
+        existedEmailDialogBuilder.setPositiveButton("YES", (dialogInterface, i) -> presenter.checkUserProvider(enteredEmail));
+        existedEmailDialog = existedEmailDialogBuilder.create();
+        existedEmailDialog.show();
+    }
+
+    @Override
+    public void startExistedEmailActivity() {
+        startActivity(new Intent(this, ExistedEmailActivity.class));
+    }
+
+    @Override
+    public void startExistedGoogleActivity() {
+        startActivity(new Intent(this, ExistedGoogleActivity.class));
+    }
+
+    @Override
+    public void startMyMainActivity() {
+        startActivity(new Intent(this, MyMainActivity.class));
+    }
+
 }

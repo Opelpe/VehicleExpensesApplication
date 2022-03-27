@@ -30,7 +30,7 @@ public class ExistedEmailPresenter implements ExistedEmailContract.Presenter {
     public ExistedEmailPresenter(ExistedEmailContract.View view, Context context) {
         this.view = view;
         sharedPrefsHelper = new SharedPrefsHelper(context);
-        firebaseHelper = FirebaseHelper.getInstance();
+        firebaseHelper = FirebaseHelper.getInstance(context);
     }
 
     @Override
@@ -40,37 +40,41 @@ public class ExistedEmailPresenter implements ExistedEmailContract.Presenter {
 
     @Override
     public void onCheckPasswordEmailButtonClicekd(String enteredPassword) {
-        Log.d(EX_EMAIL_PRESENTER_TAG, "onCheckPasswordEmailButtonClicekd();  \n handle password: " + enteredPassword);
-
 
         String enteredEmail = sharedPrefsHelper.getEnteredEmail();
 
         if (enteredPassword.trim().isEmpty()) {
-            view.makeToast("ENTER PASSWORD");
+            view.showToast("ENTER PASSWORD", true);
         } else {
-            if (enteredPassword.trim().length() < 7) {
-                view.makeToast("PASSWORD MUST CONTAINS 7 CHARACTERS");
-            } else {
                 view.showLoadingEmailDialog();
 
                 firebaseHelper.loginWithEmailPasswordCallback(enteredEmail, enteredPassword).addOnSuccessListener(authResult -> {
 
                     AuthResult result = authResult;
-                    String currentemail = result.getUser().getEmail();
-                    sharedPrefsHelper.saveSignedUserEmail(currentemail);
+                    String currentEmail = result.getUser().getEmail();
+
+                    sharedPrefsHelper.saveIsAnonymous(false);
+                    sharedPrefsHelper.saveSignWGoogleEmail(null);
+                    sharedPrefsHelper.saveSignWEmailEmail(currentEmail);
+                    sharedPrefsHelper.saveSignedUserEmail(currentEmail);
+                    sharedPrefsHelper.saveGoogleSignInCompleted(false);
+
                     view.startMyMainActivity();
                     view.cancelLoadingDialog();
+                    view.showToast("SUCCESSFULLY LOG IN", false);
 
                 }).addOnFailureListener(e -> {
-                    view.showToast(e.getMessage());
+
+                    view.showToast("WRONG PASSWORD OR EMAIL", false);
+
+                    sharedPrefsHelper.saveSignWEmailEmail(null);
+                    sharedPrefsHelper.saveSignedUserEmail(null);
+
                     view.cancelLoadingDialog();
+
                     Log.d(EX_EMAIL_PRESENTER_TAG, "EXCEPTION CAPTURED: \n" + e);
                 });
-            }
         }
-
-
-
     }
 
     @Override

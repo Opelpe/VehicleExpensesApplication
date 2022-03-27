@@ -6,6 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.feautures.main.MainFragment">
 
+    <include
+        android:id="@+id/mainFragmentToolbar"
+        layout="@layout/toolbar_top"/>
+
     <TextView
         android:id="@+id/averageUsageText"
         android:layout_width="0dp"
@@ -16,7 +20,7 @@
         android:textSize="@dimen/text_normal"
         app:layout_constraintEnd_toStartOf="@id/travelingCostsText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/mainFragmentToolbar"/>
 
     <TextView
         android:id="@+id/averageUsageView"
@@ -51,7 +55,7 @@
         android:textSize="@dimen/text_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/averageUsageText"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/mainFragmentToolbar"/>
 
     <TextView
         android:id="@+id/travelingCostsView"

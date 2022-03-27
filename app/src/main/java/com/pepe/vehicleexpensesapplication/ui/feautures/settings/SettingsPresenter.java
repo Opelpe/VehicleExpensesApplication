@@ -1,6 +1,10 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.settings;
 
+import android.content.Context;
+
 import com.pepe.vehicleexpensesapplication.data.adapters.SettingsUiModel;
+import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +15,27 @@ public class SettingsPresenter implements SettingsContract.Presenter{
 
     private List<SettingsUiModel> settingsUiModelList = new ArrayList<>();
 
-    public SettingsPresenter(SettingsContract.View view){
+    private SharedPrefsHelper sharedPrefsHelper;
+
+    private FirebaseHelper firebaseHelper;
+
+    public SettingsPresenter(SettingsContract.View view, Context context){
         this.view = view;
+        sharedPrefsHelper = new SharedPrefsHelper(context);
+        firebaseHelper = FirebaseHelper.getInstance(context);
+    }
+
+    @Override
+    public boolean getIsAnonymous() {
+        return sharedPrefsHelper.getIsAnonymous();
     }
 
     @Override
     public void onViewCreated() {
+        setSettingsList();
+    }
+
+    private void setSettingsList() {
         settingsUiModelList.add(new SettingsUiModel("SETTINGS", SettingsUiModel.Type.SectionHeader));
         settingsUiModelList.add(new SettingsUiModel("SHOP", SettingsUiModel.Type.NoDataHeader));
         settingsUiModelList.add(new SettingsUiModel("SYNCHRONIZATION", SettingsUiModel.Type.WithDataHeader));
@@ -37,5 +56,14 @@ public class SettingsPresenter implements SettingsContract.Presenter{
     @Override
     public List<SettingsUiModel> getRVItems() {
         return settingsUiModelList;
+    }
+
+    @Override
+    public void checkSynchronization() {
+        if (sharedPrefsHelper.getIsAnonymous()){
+            view.startLoginActivity();
+        }else {
+            view.startLogOutActivity();
+        }
     }
 }

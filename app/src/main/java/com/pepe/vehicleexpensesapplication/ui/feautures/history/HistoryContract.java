@@ -4,12 +4,17 @@ public interface HistoryContract {
 
     interface View{
 
-        void setSynchornizationImageViewOff();
 
-        void setSynchornizationImageViewOn();
+        void startRefilActivity();
+
+        void setHistoryFragmentToolbar();
     }
 
     interface  Presenter{
         void onViewCreated();
+
+        void onFloatingRefillButtonClicked();
+
+        boolean getSynchronizationStatus();
     }
 }

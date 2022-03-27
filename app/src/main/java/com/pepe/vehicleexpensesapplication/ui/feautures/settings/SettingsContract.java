@@ -7,6 +7,9 @@ import java.util.List;
 public interface SettingsContract {
     interface View{
 
+        void startLogOutActivity();
+
+        void startLoginActivity();
     }
 
     interface Presenter{
@@ -14,5 +17,9 @@ public interface SettingsContract {
         void onViewCreated();
 
         List<SettingsUiModel> getRVItems();
+
+        boolean getIsAnonymous();
+
+        void checkSynchronization();
     }
 }

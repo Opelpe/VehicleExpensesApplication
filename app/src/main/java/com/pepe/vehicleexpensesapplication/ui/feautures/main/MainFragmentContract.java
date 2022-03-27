@@ -12,23 +12,19 @@ public interface MainFragmentContract {
 
         void setMainFragmentToolbar();
 
-        void presenterStartActivityForResult(Intent signInIntent, int rcSignIn);
-
-        void showLoadingGoogleDialog(String googleEmail);
 
         void startMyMainActivity();
 
-        void setSynchornizationImageViewOn();
 
-        void setSynchornizationImageViewOff();
+        void startRefillActivity();
     }
 
     interface Presenter{
 
         void onViewCreated();
 
-        void actionChangeGooleAccountClicked(GoogleSignInOptions gso, GoogleSignInClient gsc);
+        void onRefillButtonClicked();
 
-        void handleSignInResult(Task<GoogleSignInAccount> task);
+        boolean getSynchronizationStatus();
     }
 }

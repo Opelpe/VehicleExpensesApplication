@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.history;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 public class HistoryPresenter implements HistoryContract.Presenter {
 
@@ -19,46 +21,34 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     private FirebaseHelper firebaseHelper;
 
-    public HistoryPresenter(HistoryContract.View view) {
+    private SharedPrefsHelper sharedPrefsHelper;
+
+    public HistoryPresenter(HistoryContract.View view, Context historyContext) {
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance();
+        firebaseHelper = FirebaseHelper.getInstance(historyContext);
+        sharedPrefsHelper = new SharedPrefsHelper(historyContext);
     }
 
+    @Override
+    public boolean getSynchronizationStatus() {
+
+        return !sharedPrefsHelper.getIsAnonymous();
+    }
 
     @Override
     public void onViewCreated() {
         try {
             Log.w(HISTORY_FR_PRESENTER_TAG, "handle PROVIDER: START");
-            if (firebaseHelper.getUid() != null) {
-                Log.w(HISTORY_FR_PRESENTER_TAG, "handle PROVIDER: IF");
-                FirebaseUser user = firebaseHelper.getCurrentUser();
-                String uID = user.getUid();
 
-                firebaseHelper.firestoreUIDProvidersCallback().whereEqualTo("UID", firebaseHelper.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        Log.w(HISTORY_FR_PRESENTER_TAG, "handle PROVIDER: START before task.isSuccess");
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot doc : task.getResult()) {
-                                String provider = doc.get("Provider").toString();
-                                Log.w(HISTORY_FR_PRESENTER_TAG, "handle PROVIDER: " + provider);
-
-                                if (provider.equals("Anonymously")) {
-                                    view.setSynchornizationImageViewOff();
-                                }else {
-                                    view.setSynchornizationImageViewOn();
-                                }
-
-
-                            }
-                        }
-                    }
-                });
-
-            }
+            view.setHistoryFragmentToolbar();
 
         } catch (Exception e) {
             Log.w(HISTORY_FR_PRESENTER_TAG, "handle PROVIDER EXCEPTION CAPTURED:: " + e);
         }
+    }
+
+    @Override
+    public void onFloatingRefillButtonClicked() {
+        view.startRefilActivity();
     }
 }

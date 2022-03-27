@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="firebase_default_web_client_id" translatable="false">389901073044-ckf325a7scu0f2jlmirg46ekqutib06c.apps.googleusercontent.com</string>
+
     <string name="app_name">VehicleExpensesApplication</string>
 
     <string name="settings_text">Settings</string>
@@ -31,5 +33,10 @@
     <string name="data_null_big_text">---,--</string>
     <string name="date_null_text">---.---.------</string>
     <string name="refil_units_text">L</string>
+    <string name="save_text">SAVE</string>
+    <string name="log_out_text">LOG OUT</string>
+    <string name="cloud_sync_text">\"CLOUD SYNC: \"</string>
+    <string name="offline_text">OFFLINE</string>
+    <string name="online_text">ONLINE</string>
 
 </resources>

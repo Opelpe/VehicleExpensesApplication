@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.adapters.SettingsAdapter;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentSettingsBinding;
+import com.pepe.vehicleexpensesapplication.ui.feautures.login.LoginActivity;
+import com.pepe.vehicleexpensesapplication.ui.feautures.logout.LogOutActivity;
 
 
 public class SettingsFragment extends Fragment implements SettingsContract.View {
@@ -31,6 +34,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     private View.OnClickListener onSettingsClickListener;
 
     private View.OnClickListener onSettingsWithDataClickListener;
+    private View.OnClickListener dataSettingsListener;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -55,7 +59,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
         }
 
 
-        presenter = new SettingsPresenter(this);
+        presenter = new SettingsPresenter(this, getContext());
 
         presenter.onViewCreated();
 
@@ -63,9 +67,9 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
 
         onSettingsClickListener = view -> {
 
-           TextView setText = view.findViewById(R.id.settingsText);
+            TextView setText = view.findViewById(R.id.settingsText);
 
-           String clickedSet = setText.getText().toString();
+            String clickedSet = setText.getText().toString();
 
             Log.d(SETTINGS_FRAGMENT_TAG, "CHOSEN SETTING: " + clickedSet + "  no data text ");
 
@@ -80,16 +84,35 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             TextView dataText = view.findViewById(R.id.settingsDataText);
             String dataClick = dataText.getText().toString();
             Log.d(SETTINGS_FRAGMENT_TAG, "CHOSEN SETTING: " + clickedSet + " data text: " + dataClick);
+
+            if (clickedSet.equals("SYNCHRONIZATION")){
+                presenter.checkSynchronization();
+            }
+        };
+
+        dataSettingsListener = view -> {
+            presenter.checkSynchronization();
         };
 
         settingsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        SettingsAdapter settingsAdapter = new SettingsAdapter(onSettingsClickListener, onSettingsWithDataClickListener);
+        SettingsAdapter settingsAdapter = new SettingsAdapter(onSettingsClickListener, onSettingsWithDataClickListener, dataSettingsListener, getContext());
         settingsAdapter.setItems(presenter.getRVItems());
         settingsRecycler.setAdapter(settingsAdapter);
 
 
         return root;
     }
+
+    @Override
+    public void startLogOutActivity() {
+        startActivity(new Intent(getContext(), LogOutActivity.class));
+    }
+
+    @Override
+    public void startLoginActivity() {
+        startActivity(new Intent(getContext(), LoginActivity.class));
+    }
+
 
 
 }

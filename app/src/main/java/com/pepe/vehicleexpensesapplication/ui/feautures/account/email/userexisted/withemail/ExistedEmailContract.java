@@ -13,11 +13,10 @@ public interface ExistedEmailContract {
 
         void startMyMainActivity();
 
-        void showToast(String toastMsg);
+        void showToast(String toastMsg, boolean lenghtLong);
 
         void showLoadingEmailDialog();
 
-        void makeToast(String toastMsg);
 
         void cancelLoadingDialog();
     }

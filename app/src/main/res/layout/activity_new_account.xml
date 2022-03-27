@@ -11,7 +11,7 @@
         android:layout_width="200dp"
         android:layout_height="260dp"
         android:layout_marginTop="100dp"
-        android:src="@drawable/ic_baseline_drive_eta_24"
+        android:src="@drawable/ic_car_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

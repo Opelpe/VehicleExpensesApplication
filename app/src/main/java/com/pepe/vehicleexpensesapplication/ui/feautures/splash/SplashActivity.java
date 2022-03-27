@@ -1,5 +1,7 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.splash;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     private ActivitySplashBinding binding;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,17 +28,23 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
         setContentView(binding.getRoot());
 
         presenter = new SplashPresenter(this, getApplicationContext());
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         presenter.onViewCreated();
-
     }
 
     @Override
-    public void startMainActivity() {
+    public void showNoInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("NO INTERNET");
+        builder.setMessage("YOU MUST HAVE INTERNET CONNECTION");
+        builder.setPositiveButton("REFRESH", (dialogInterface, i) ->
+                startActivity(new Intent(getApplicationContext(), SplashActivity.class)));
+        AlertDialog noInternetDialog = builder.create();
+        noInternetDialog.show();
+    }
+
+    @Override
+    public void startMyMainActivity() {
         startActivity(new Intent(this, MyMainActivity.class));
     }
 

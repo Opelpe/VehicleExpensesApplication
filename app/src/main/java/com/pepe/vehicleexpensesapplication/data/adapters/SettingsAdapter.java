@@ -1,5 +1,8 @@
 package com.pepe.vehicleexpensesapplication.data.adapters;
 
+import static com.pepe.vehicleexpensesapplication.R.*;
+
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,25 +19,52 @@ import java.util.List;
 
 public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final Context settingsContext;
     private View.OnClickListener onSettingsClickListener;
 
     private View.OnClickListener onSettingsWithDataClickListener;
 
-
+    private SharedPrefsHelper sharedPrefsHelper;
 
     private List<SettingsUiModel> settingsUiModelList = new ArrayList<>();
 
     private final static int TYPE_SECTION = 1;
     private final static int TYPE_SETTINGS_NO_DATA = 2;
     private final static int TYPE_SETTINGS_WITH_DATA = 3;
-    private static final int TYPE_DIVIDER = 4;
+    private View.OnClickListener dataSettingsListener;
 
 
-    public SettingsAdapter(View.OnClickListener listener, View.OnClickListener onSettingsWithDataClickListener) {
+    public SettingsAdapter(View.OnClickListener listener, View.OnClickListener onSettingsWithDataClickListener, View.OnClickListener dataSettingsListener, Context settingsContext) {
         this.onSettingsClickListener = listener;
         this.onSettingsWithDataClickListener = onSettingsWithDataClickListener;
+        this.dataSettingsListener = dataSettingsListener;
+        this.settingsContext = settingsContext;
     }
 
+    private boolean isSyncTitle(String itemTitle) {
+        return itemTitle.equals("SYNCHRONIZATION");
+
+    }
+
+    private boolean isCurencyTitle(String itemTitle) {
+        return itemTitle.equals("CURRENCY");
+    }
+
+    private String cloudSyncText() {
+        return settingsContext.getString(string.cloud_sync_text).replaceAll("\"", "");
+    }
+
+    private String offlineText() {
+        return settingsContext.getString(string.offline_text).replaceAll("[^\\p{L}\\p{Z}]", "");
+    }
+
+    private String onlineText() {
+        return settingsContext.getString(string.online_text).replaceAll("[^\\p{L}\\p{Z}]", "");
+    }
+
+    private String currencyText() {
+        return settingsContext.getString(string.price_units).replaceAll("[^\\p{L}\\p{Z}]", "");
+    }
 
     @NonNull
     @Override
@@ -42,7 +72,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (viewType == TYPE_SECTION) {
 
-            View sectionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_settings_section, parent, false);
+            View sectionView = LayoutInflater.from(parent.getContext()).inflate(layout.item_settings_section, parent, false);
+
+            sharedPrefsHelper = new SharedPrefsHelper(parent.getContext());
 
             SectionViewHolder sectionViewHolder = new SectionViewHolder(sectionView);
             return sectionViewHolder;
@@ -50,7 +82,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             if (viewType == TYPE_SETTINGS_NO_DATA) {
 
-                View settingsNoDataView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_settings_no_data, parent, false);
+                View settingsNoDataView = LayoutInflater.from(parent.getContext()).inflate(layout.item_settings_no_data, parent, false);
 
                 SettingsNoDataViewHolder settingsNoDataHolder = new SettingsNoDataViewHolder(settingsNoDataView);
                 settingsNoDataHolder.itemView.setOnClickListener(onSettingsClickListener);
@@ -58,9 +90,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return settingsNoDataHolder;
 
             } else {
-                View settingWithDataView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_settings_with_data, parent, false);
+//                view type == TYPE_SETTINGS_WITH_DATA
+
+                View settingWithDataView = LayoutInflater.from(parent.getContext()).inflate(layout.item_settings_with_data, parent, false);
                 SettingsWithDataViewHolder settingWithDataHolder = new SettingsWithDataViewHolder(settingWithDataView);
-//                settingWithDataHolder.itemView.setOnClickListener(onSettingsClickListener);
                 settingWithDataHolder.itemView.setOnClickListener(onSettingsWithDataClickListener);
 
                 return settingWithDataHolder;
@@ -72,6 +105,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
+//                    TEST
         if (holder instanceof SectionViewHolder) {
             SectionViewHolder sectionViewHolder = (SectionViewHolder) holder;
 
@@ -85,12 +119,18 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     SettingsWithDataViewHolder settingsWithDataViewHolder = (SettingsWithDataViewHolder) holder;
 
                     settingsWithDataViewHolder.settingsText.setText(settingsUiModelList.get(position).title);
-                    if (settingsUiModelList.get(position).title.equals("CURRENCY")) {
-                        settingsWithDataViewHolder.dataSettingsText.setText("PLN");
+                    if (isCurencyTitle(settingsUiModelList.get(position).title)) {
+                        settingsWithDataViewHolder.dataSettingsText.setText(currencyText());
                     }
-                    if (settingsUiModelList.get(position).title.equals("SYNCHRONIZATION")) {
-                        settingsWithDataViewHolder.dataSettingsText.setText("CHECK DATA SYNCHRONIZATION");
+                    if (isSyncTitle(settingsUiModelList.get(position).title)) {
+                        if (sharedPrefsHelper.getIsAnonymous()) {
+                            settingsWithDataViewHolder.dataSettingsText.setText(new StringBuilder().append(cloudSyncText()).append(offlineText()).toString());
+                            settingsWithDataViewHolder.itemView.setOnClickListener(dataSettingsListener);
+                        } else {
+                            settingsWithDataViewHolder.dataSettingsText.setText(String.format("%s%s", cloudSyncText(), onlineText()));
+                        }
                     }
+
                     if (settingsUiModelList.get(position).title.equals("CAPACITY UNITS")) {
                         settingsWithDataViewHolder.dataSettingsText.setText("LITTERS");
                     }
@@ -103,11 +143,11 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (settingsUiModelList.get(position).title.equals("MILEAGE UNITS")) {
                         settingsWithDataViewHolder.dataSettingsText.setText("KM");
                     }
-
                 }
             }
         }
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -140,7 +180,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public SettingsNoDataViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            settingsText = itemView.findViewById(R.id.settingsText);
+            settingsText = itemView.findViewById(id.settingsText);
 
         }
     }
@@ -152,8 +192,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public SectionViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            sectionHeaderText = itemView.findViewById(R.id.settingsHeaderTextView);
-
+            sectionHeaderText = itemView.findViewById(id.settingsHeaderTextView);
 
         }
     }
@@ -166,8 +205,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public SettingsWithDataViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            dataSettingsText = itemView.findViewById(R.id.settingsDataText);
-            settingsText = itemView.findViewById(R.id.settingsText);
+            dataSettingsText = itemView.findViewById(id.settingsDataText);
+            settingsText = itemView.findViewById(id.settingsText);
 
         }
     }
