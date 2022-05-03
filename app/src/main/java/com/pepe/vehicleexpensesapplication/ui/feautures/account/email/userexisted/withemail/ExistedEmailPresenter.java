@@ -6,14 +6,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
@@ -48,7 +41,7 @@ public class ExistedEmailPresenter implements ExistedEmailContract.Presenter {
         } else {
                 view.showLoadingEmailDialog();
 
-                firebaseHelper.loginWithEmailPasswordCallback(enteredEmail, enteredPassword).addOnSuccessListener(authResult -> {
+                firebaseHelper.loginWithEmailPasswordTask(enteredEmail, enteredPassword).addOnSuccessListener(authResult -> {
 
                     AuthResult result = authResult;
                     String currentEmail = result.getUser().getEmail();

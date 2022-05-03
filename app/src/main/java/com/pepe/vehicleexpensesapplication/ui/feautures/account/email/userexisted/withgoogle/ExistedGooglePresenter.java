@@ -4,18 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.ConstantsPreferences;
@@ -65,7 +58,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
 
             AuthCredential credential = firebaseHelper.getAuthCredential(account.getIdToken());
 
-            firebaseHelper.loginWithGoogleCallback(credential)
+            firebaseHelper.loginWithGoogleTask(credential)
                     .addOnSuccessListener(authResult -> {
 
                         FirebaseUser user = authResult.getUser();
@@ -89,7 +82,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
                             userMap.put("Displayed name", displayedName);
                             userMap.put("Provider", provider);
 
-                            firebaseHelper.firestoreUsersUIDCallback(uID)
+                            firebaseHelper.usersIDDocument(uID)
                                     .set(userMap)
                                     .addOnCompleteListener(task1 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
                                             + "\n successfully added to Users collection by GoogleSignIn, Email: " + email));
@@ -99,7 +92,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
                             providerMap.put("Email", email);
                             providerMap.put("UID", uID);
 
-                            firebaseHelper.firestoreProvidersCallback(email)
+                            firebaseHelper.providersUIDDocument(email)
                                     .set(providerMap)
                                     .addOnCompleteListener(task12 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
                                             + " success with saving GOOGLE providers"))
@@ -120,7 +113,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
                                 providerMap.put("Email", email);
                                 providerMap.put("UID", uID);
 
-                                firebaseHelper.firestoreProvidersCallback(email)
+                                firebaseHelper.providersUIDDocument(email)
                                         .set(providerMap);
 
                                 view.cancelLoadingDialog();

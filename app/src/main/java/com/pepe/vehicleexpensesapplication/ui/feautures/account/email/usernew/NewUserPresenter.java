@@ -6,15 +6,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.ConstantsPreferences;
@@ -86,7 +79,7 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                                             view.makeToast("PASSWORD MUST CONTAINS 7 CHARACTERS");
                                         } else {
                                             view.showLoadingEmailDialog();
-                                            firebaseHelper.fetchSignInMethodsForEmailCallback(enteredEmail).addOnCompleteListener(task -> {
+                                            firebaseHelper.fetchSignInMethodsForEmailTask(enteredEmail).addOnCompleteListener(task -> {
 
                                                 boolean emailNotExists = task.getResult().getSignInMethods().isEmpty();
 
@@ -112,7 +105,7 @@ public class NewUserPresenter implements NewUserContract.Presenter {
     public void checkUserProvider(String enteredEmail) {
         sharedPrefsHelper.saveEnteredEmail(enteredEmail);
 
-        firebaseHelper.getProviderCallback(enteredEmail).addSnapshotListener((value, error) -> {
+        firebaseHelper.getProvidersQuery(enteredEmail).addSnapshotListener((value, error) -> {
 
             if (error != null) {
                 Log.w(NEW_USER_PRESENTER_TAG, "Provider listen failed.", error);
@@ -137,7 +130,7 @@ public class NewUserPresenter implements NewUserContract.Presenter {
 
     private void createNewAccount(String enteredEmail, String enteredPassword, String enteredName) {
 
-        firebaseHelper.createWithEmailPasswordCallback(enteredEmail, enteredPassword, enteredName)
+        firebaseHelper.createWithEmailPasswordTask(enteredEmail, enteredPassword, enteredName)
                 .addOnCompleteListener(task -> {
                     AuthResult doc = task.getResult();
                     FirebaseUser user = doc.getUser();
@@ -156,14 +149,14 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                     userMap.put("Name", enteredName);
                     userMap.put("User ID", uID);
 
-                    firebaseHelper.firestoreUIDUsersCallback(uID)
+                    firebaseHelper.usersIDDocument(uID)
                             .set(userMap);
 
                     Map<String, Object> providerMap = new HashMap<>();
                     providerMap.put("Provider", ConstantsPreferences.PROVIDERS_EMAIL_PASSWORD);
                     providerMap.put("Email", enteredEmail);
                     providerMap.put("UID", uID);
-                    firebaseHelper.firestoreUIDProvidersCallback()
+                    firebaseHelper.providersCollection()
                             .document(uID)
                             .set(providerMap)
                             .addOnCompleteListener(task12 -> {

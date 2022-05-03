@@ -2,11 +2,7 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.logout;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
@@ -50,9 +46,9 @@ public class LogOutPresenter implements LogOutContract.Presenter {
 
         String userId = sharedPrefsHelper.getSignedUserID();
 
-        firebaseHelper.deleteUserDataCallback(userId).addOnCompleteListener(task -> {
+        firebaseHelper.deleteUserDataTask(userId).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                firebaseHelper.deleteFirebaseUserCallback().addOnCompleteListener(task1 ->
+                firebaseHelper.deleteFirebaseUserTask().addOnCompleteListener(task1 ->
                         googleSignInClient.signOut().addOnCompleteListener(task2 -> {
 
                             sharedPrefsHelper.saveSignWGoogleEmail(null);

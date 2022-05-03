@@ -2,19 +2,20 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.history;
 
 public interface HistoryContract {
 
-    interface View{
+    interface View {
 
-
-        void startRefilActivity();
+        void startRefillActivity();
 
         void setHistoryFragmentToolbar();
+
     }
 
-    interface  Presenter{
+    interface Presenter {
+
         void onViewCreated();
 
         void onFloatingRefillButtonClicked();
 
-        boolean getSynchronizationStatus();
+        boolean checkIsAnonymous();
     }
 }

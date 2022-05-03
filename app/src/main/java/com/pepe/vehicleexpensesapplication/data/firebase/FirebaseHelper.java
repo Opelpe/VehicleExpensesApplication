@@ -58,15 +58,15 @@ public class FirebaseHelper {
         fAuth.signOut();
     }
 
-    public Task<Void> deleteFirebaseUserCallback() {
+    public Task<Void> deleteFirebaseUserTask() {
         return fAuth.getCurrentUser().delete();
     }
 
-    public Task<Void> deleteUserDataCallback(String uID) {
+    public Task<Void> deleteUserDataTask(String uID) {
         return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(uID).delete();
     }
 
-    public Task<AuthResult> createWithEmailPasswordCallback(String email, String password, String nickName) {
+    public Task<AuthResult> createWithEmailPasswordTask(String email, String password, String nickName) {
         return fAuth.createUserWithEmailAndPassword(email, password);
     }
 
@@ -136,11 +136,11 @@ public class FirebaseHelper {
         }
     }
 
-    public Task<AuthResult> loginWithEmailPasswordCallback(String email, String password) {
+    public Task<AuthResult> loginWithEmailPasswordTask(String email, String password) {
         return fAuth.signInWithEmailAndPassword(email, password);
     }
 
-    public Task<AuthResult> loginWithGoogleCallback(AuthCredential authCredential) {
+    public Task<AuthResult> loginWithGoogleTask(AuthCredential authCredential) {
         return fAuth.signInWithCredential(authCredential);
     }
 
@@ -149,30 +149,46 @@ public class FirebaseHelper {
         return credential;
     }
 
-    public Task<SignInMethodQueryResult> fetchSignInMethodsForEmailCallback(String email) {
+    public Task<SignInMethodQueryResult> fetchSignInMethodsForEmailTask(String email) {
         return fAuth.fetchSignInMethodsForEmail(email);
     }
 
-    public Query getProviderCallback(String email) {
+    public Query getProvidersQuery(String email) {
         return firestore.collection(ConstantsPreferences.COLLECTION_PROVIDERS).whereEqualTo("Email", email);
     }
 
-    public DocumentReference firestoreUsersUIDCallback(String uID) {
+    public DocumentReference usersIDDocument(String uID) {
         return firestore.collection(ConstantsPreferences.COLLECTION_USERS)
                 .document(uID);
     }
 
-    public DocumentReference firestoreProvidersCallback(String uId) {
+    public DocumentReference providersUIDDocument(String uId) {
         return firestore.collection(ConstantsPreferences.COLLECTION_PROVIDERS)
                 .document(uId);
     }
 
-    public CollectionReference firestoreUIDProvidersCallback() {
+    public CollectionReference providersCollection() {
         return firestore.collection(ConstantsPreferences.COLLECTION_PROVIDERS);
     }
 
-    public DocumentReference firestoreUIDUsersCallback(String uID) {
-        return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(uID);
+    public Task<Void> saveNewRefillTask(float currentMileage, float refilledFuel, float priceOfFuel, String refillDate,
+                                        boolean fullCapacity, long currentTime, String dateCount, String refillNotes) {
+        FirebaseUser user = getCurrentUserCallback();
+
+        Map refillMap = new HashMap();
+        refillMap.put("MILEAGE", currentMileage);
+        refillMap.put("FUEL", refilledFuel);
+        refillMap.put("PRICE", priceOfFuel);
+        refillMap.put("DATE", refillDate);
+        refillMap.put("DATE COUNT", dateCount);
+        refillMap.put("FULL TANK", fullCapacity);
+        refillMap.put("NOTES", refillNotes);
+        return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(user.getUid()).collection(ConstantsPreferences.COLLECTION_REFILL)
+                .document(String.valueOf(currentTime)).set(refillMap);
+    }
+
+    public CollectionReference getRefillsListCollection() {
+        return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(getUid()).collection(ConstantsPreferences.COLLECTION_REFILL);
     }
 
 }

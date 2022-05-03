@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,12 +33,12 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     private FragmentHistoryBinding binding;
 
     //    private HistoryFragment(){
-//        presenter = new HistoryPresenter(this);
-//    }
+//        presenter = new HistoryPresenter(this);}
+
     private HistoryContract.Presenter presenter;
     private RecyclerView historyRecycler;
     private View.OnClickListener historyListener;
-
+    private HistoryAdapter historyAdapter;
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -55,33 +56,41 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
         presenter.onViewCreated();
 
-        FloatingActionButton floatingRefilButton = binding.floatingRefillButton;
-        floatingRefilButton.setOnClickListener(view -> {
+        FloatingActionButton floatingRefillButton = binding.floatingRefillButton;
+        floatingRefillButton.setOnClickListener(view -> {
             presenter.onFloatingRefillButtonClicked();
         });
-
-        historyRecycler = binding.historyRecyclerView;
-
-        historyListener = view -> {
-
-            Log.d(HISTORY_FRAGMENT_TAG, "text clicked");
-
-        };
-        historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        HistoryAdapter historyAdapter = new HistoryAdapter(historyListener);
-
-        historyRecycler.setAdapter(historyAdapter);
 
         return root;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        historyRecycler = binding.historyRecyclerView;
+
+        historyListener = view -> {
+            TextView hItemIDText = view.findViewById(R.id.historyItemIdText);
+
+            Log.d(HISTORY_FRAGMENT_TAG, "Item clicked, ITEM ID: " + hItemIDText.getText().toString());
+        };
+        historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        historyAdapter = new HistoryAdapter(historyListener, getContext());
+        historyRecycler.setAdapter(historyAdapter);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_synchronize_history:
 
-                Toast.makeText(getContext(), "synchronize data", Toast.LENGTH_SHORT).show();
+                if (presenter.checkIsAnonymous()) {
+                    Toast.makeText(getContext(), "Sign in & Synchronize data", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Your data is synchronized", Toast.LENGTH_SHORT).show();
+                }
                 return true;
 
             default:
@@ -95,13 +104,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
         inflater.inflate(R.menu.history_nav_menu, menu);
 
-        boolean cloudStatus = presenter.getSynchronizationStatus();
-
-        if (!cloudStatus){
-            Log.d(HISTORY_FRAGMENT_TAG, "on Create Options Menu : CLOUD STATUS OFF: " + cloudStatus );
+        if (presenter.checkIsAnonymous()) {
             menu.findItem(R.id.action_synchronize_history).setIcon(R.drawable.ic_baseline_cloud_off_24);
-        }else {
-            Log.d(HISTORY_FRAGMENT_TAG, "on Create Options Menu : CLOUD STATUS ON: " + cloudStatus);
+        } else {
             menu.findItem(R.id.action_synchronize_history).setIcon(R.drawable.ic_baseline_cloud_queue_24);
         }
     }
@@ -126,13 +131,13 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
             bar.show();
 
         } catch (Exception e) {
-            Log.d(HISTORY_FRAGMENT_TAG, "getsuppotrtedActionBar EXCEPTION CAPTURED: " + e);
+            Log.d(HISTORY_FRAGMENT_TAG, "set History Fragment Toolbar EXCEPTION CAPTURED: " + e);
         }
-
     }
 
     @Override
-    public void startRefilActivity() {
+    public void startRefillActivity() {
         startActivity(new Intent(getContext(), RefillActivity.class));
     }
+
 }

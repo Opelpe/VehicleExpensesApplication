@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -66,7 +65,7 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
 
             AuthCredential credential = firebaseHelper.getAuthCredential(account.getIdToken());
 
-            firebaseHelper.loginWithGoogleCallback(credential)
+            firebaseHelper.loginWithGoogleTask(credential)
                     .addOnSuccessListener(authResult -> {
 
                         FirebaseUser user = authResult.getUser();
@@ -92,7 +91,7 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
                             userMap.put("Displayed name", displayedName);
                             userMap.put("Provider", provider);
 
-                            firebaseHelper.firestoreUsersUIDCallback(uID)
+                            firebaseHelper.usersIDDocument(uID)
                                     .set(userMap)
                                     .addOnCompleteListener(task1 -> Log.d(NACC_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
                                             + "\n successfully added to Users collection by GoogleSignIn, Email: " + email));
@@ -102,7 +101,7 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
                             providerMap.put("Email", email);
                             providerMap.put("UID", uID);
 
-                            firebaseHelper.firestoreProvidersCallback(uID)
+                            firebaseHelper.providersUIDDocument(uID)
                                     .set(providerMap)
                                     .addOnCompleteListener(task12 -> Log.d(NACC_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
                                             + " success GOOGLE providers"))
@@ -127,7 +126,7 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
                                     providerMap.put("Provider", provider);
                                     providerMap.put("Email", email);
                                     providerMap.put("UID", uID);
-                                    firebaseHelper.firestoreProvidersCallback(email)
+                                    firebaseHelper.providersUIDDocument(email)
                                             .set(providerMap);
 
                                     view.cancelLoadingDialog();
@@ -145,7 +144,7 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
                                     providerMap.put("Email", email);
                                     providerMap.put("UID", uID);
 
-                                    firebaseHelper.firestoreProvidersCallback(email)
+                                    firebaseHelper.providersUIDDocument(email)
                                             .set(providerMap);
 
                                     view.cancelLoadingDialog();

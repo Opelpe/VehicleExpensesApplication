@@ -3,18 +3,9 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.account.email;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EmailAccountPresenter implements EmailAccountContract.Presenter {
 
@@ -42,7 +33,7 @@ public class EmailAccountPresenter implements EmailAccountContract.Presenter {
             } else {
                 view.showLoadingEmailDialog();
                 if (enteredEmail.trim().matches(emailPattern) && enteredEmail.trim().length() > 0) {
-                    firebaseHelper.fetchSignInMethodsForEmailCallback(enteredEmail)
+                    firebaseHelper.fetchSignInMethodsForEmailTask(enteredEmail)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     boolean isRegister = task.getResult().getSignInMethods().isEmpty();
@@ -87,7 +78,7 @@ public class EmailAccountPresenter implements EmailAccountContract.Presenter {
     private void logInExistedUser(String enteredEmail) {
         sharedPrefsHelper.saveEnteredEmail(enteredEmail);
 
-        firebaseHelper.getProviderCallback(enteredEmail).addSnapshotListener((value, error) -> {
+        firebaseHelper.getProvidersQuery(enteredEmail).addSnapshotListener((value, error) -> {
 
             if (error != null) {
                 Log.w(EMAIL_PRESENTER_TAG, "Provider listen failed.", error);

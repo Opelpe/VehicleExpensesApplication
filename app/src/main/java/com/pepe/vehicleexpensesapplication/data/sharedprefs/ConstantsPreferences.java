@@ -24,4 +24,8 @@ public class ConstantsPreferences {
 
     public static final int RC_SIGN_IN = 100;
 
+    public static final String COLLECTION_REFILL = "COLLECTION_REFILL";
+    public static final String HISTORY_SIZE = "HISTORY_SIZE";
+    public static final String REFILL_DATES = "REFILL_DATES";
+    public static final String HISTORY_ITEM_ID = "HISTORY_ITEM_ID";
 }

@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryDark">@color/green_dark</item>
-        <item name="colorAccent">@color/pistachio</item>
+        <item name="colorAccent">@color/green_dark</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

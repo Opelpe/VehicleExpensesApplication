@@ -32,11 +32,16 @@
     <string name="data_null_small_text">---</string>
     <string name="data_null_big_text">---,--</string>
     <string name="date_null_text">---.---.------</string>
-    <string name="refil_units_text">L</string>
+    <string name="capacity_units">L</string>
     <string name="save_text">SAVE</string>
     <string name="log_out_text">LOG OUT</string>
     <string name="cloud_sync_text">\"CLOUD SYNC: \"</string>
     <string name="offline_text">OFFLINE</string>
     <string name="online_text">ONLINE</string>
+    <string name="date_text">DATE</string>
+    <string name="date_example_text">DD / MM / YYYY</string>
+    <string name="current_mileage_text">CURRENT MILEAGE</string>
+    <string name="refilled_fuel_text">REFILLED FUEL</string>
+    <string name="price_of_fuel_text">PRICE OF FUEL</string>
 
 </resources>

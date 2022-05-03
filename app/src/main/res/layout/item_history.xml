@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp">
 
     <ImageView
         android:id="@+id/leftBarImageView"
+        style="@style/green_background"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        style="@style/green_background"
         android:paddingStart="3dp"
         android:paddingEnd="3dp"
         android:paddingBottom="50dp"
@@ -27,7 +28,7 @@
         android:hint="@string/date_null_text"
         android:padding="3dp"
         android:textSize="@dimen/text_normal"
-        app:layout_constraintEnd_toStartOf="@id/historyDividerView"
+        app:layout_constraintEnd_toStartOf="@id/historyDividerLeft"
         app:layout_constraintStart_toEndOf="@id/leftBarImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,10 +36,10 @@
         android:id="@+id/historyAverageUsageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/text_normal"
         android:hint="@string/data_null_big_text"
+        android:padding="@dimen/text_normal"
         android:textSize="@dimen/text_big"
-        app:layout_constraintEnd_toStartOf="@id/historyDividerView"
+        app:layout_constraintEnd_toStartOf="@id/historyDividerLeft"
         app:layout_constraintStart_toEndOf="@id/leftBarImageView"
         app:layout_constraintTop_toBottomOf="@id/historyDateText" />
 
@@ -48,12 +49,12 @@
         android:layout_height="wrap_content"
         android:text="@string/usage_units"
         android:textSize="@dimen/text_small"
-        app:layout_constraintEnd_toStartOf="@id/historyDividerView"
         app:layout_constraintEnd_toEndOf="@id/historyAverageUsageText"
+        app:layout_constraintEnd_toStartOf="@id/historyDividerLeft"
         app:layout_constraintTop_toBottomOf="@id/historyAverageUsageText" />
 
     <View
-        android:id="@+id/historyDividerView"
+        android:id="@+id/historyDividerLeft"
         android:layout_width="2dp"
         android:layout_height="60dp"
         android:layout_marginStart="10dp"
@@ -75,9 +76,9 @@
         android:paddingTop="3dp"
         android:paddingEnd="5dp"
         android:textSize="@dimen/text_normal"
-        app:layout_constraintStart_toEndOf="@id/historyDividerView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:drawableStartCompat="@drawable/ic_milaege_image" />
+        app:drawableStartCompat="@drawable/ic_milaege_image"
+        app:layout_constraintStart_toEndOf="@id/historyDividerLeft"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/historyMileageUnits"
@@ -91,59 +92,63 @@
 
     <TextView
         android:id="@+id/historyAddedMileageText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="@string/data_null_small_text"
         android:paddingStart="15dp"
         android:paddingTop="3dp"
         android:paddingEnd="2dp"
+        android:textAlignment="viewEnd"
         android:textSize="@dimen/text_normal"
-        app:layout_constraintStart_toEndOf="@id/historyDividerView"
+        app:layout_constraintEnd_toStartOf="@id/historyAddedMileageUnits"
+        app:layout_constraintStart_toEndOf="@id/historyDividerLeft"
         app:layout_constraintTop_toBottomOf="@id/historyMileageText" />
 
     <TextView
         android:id="@+id/historyAddedMileageUnits"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:text="@string/mileage_units"
         android:textSize="@dimen/text_small"
         app:layout_constraintBottom_toBottomOf="@id/historyAddedMileageText"
-        app:layout_constraintEnd_toStartOf="@id/historyMileageDividerView"
-        app:layout_constraintStart_toEndOf="@id/historyAddedMileageText" />
+        app:layout_constraintEnd_toStartOf="@id/historyDividerRight" />
 
     <View
-        android:id="@+id/historyMileageDividerView"
+        android:id="@+id/historyDividerRight"
         android:layout_width="2dp"
         android:layout_height="35dp"
-        android:layout_marginStart="15dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/historyExpenseText"
-        app:layout_constraintStart_toEndOf="@id/historyAddedMileageUnits"
-        app:layout_constraintTop_toTopOf="@id/historyMileageText"/>
+        app:layout_constraintEnd_toStartOf="@id/deleteHistoryButton"
+        app:layout_constraintStart_toEndOf="@id/historyDividerLeft"
+        app:layout_constraintTop_toTopOf="@id/historyMileageText" />
 
     <TextView
         android:id="@+id/historyExpenseText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="@string/data_null_small_text"
         android:paddingStart="15dp"
         android:paddingTop="3dp"
         android:paddingEnd="2dp"
+        android:textAlignment="viewEnd"
         android:textSize="@dimen/text_normal"
-        app:layout_constraintStart_toEndOf="@id/historyMileageDividerView"
+        app:layout_constraintEnd_toStartOf="@id/historyExpenseUnits"
+        app:layout_constraintStart_toEndOf="@id/historyDividerRight"
         app:layout_constraintTop_toBottomOf="@id/historyMileageText" />
 
     <TextView
         android:id="@+id/historyExpenseUnits"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:text="@string/price_units"
         android:textSize="@dimen/text_small"
         app:layout_constraintBottom_toBottomOf="@id/historyExpenseText"
-        app:layout_constraintStart_toEndOf="@id/historyExpenseText"/>
+        app:layout_constraintEnd_toStartOf="@id/deleteHistoryButton" />
 
     <ImageButton
         android:id="@+id/deleteHistoryButton"
@@ -156,6 +161,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/historyLittersText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/data_null_small_text"
+        android:paddingStart="15dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="2dp"
+        android:textAlignment="viewEnd"
+        android:textSize="@dimen/text_small"
+        tools:text="@string/data_null_small_text"
+        app:layout_constraintStart_toStartOf="@id/historyExpenseText"
+        app:layout_constraintEnd_toEndOf="@id/historyExpenseText"
+        app:layout_constraintBottom_toTopOf="@id/historyExpenseText"/>
+
+    <TextView
+        android:id="@+id/historyLittersUnits"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="@string/capacity_units"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintEnd_toStartOf="@id/deleteHistoryButton"
+        app:layout_constraintStart_toEndOf="@id/historyLittersText"
+        app:layout_constraintBottom_toBottomOf="@id/historyLittersText"/>
+
+    <TextView
+        android:id="@+id/historyItemIdText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="3sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="item ID" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

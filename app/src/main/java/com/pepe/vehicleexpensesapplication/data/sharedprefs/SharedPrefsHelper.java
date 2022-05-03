@@ -6,6 +6,9 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SharedPrefsHelper {
 
@@ -19,6 +22,8 @@ public class SharedPrefsHelper {
     public static final String W_EMAIL_SIGNED = null;
     public static final String W_GOOGLE_SIGNED = null;
     public static final boolean IS_ANONYMOUS = false;
+    private static final int HISTORY_SIZE_COUNT = 0;
+    private static final List<String> ID_OF_HISTORY_ITEM = new ArrayList<>();
 
     private SharedPreferences preferences;
 
@@ -106,8 +111,6 @@ public class SharedPrefsHelper {
         return preferences.getString(ConstantsPreferences.W_GOOGLE_SIGNED_EMAIL, W_GOOGLE_SIGNED);
     }
 
-
-
     public void saveGoogleSignInCompleted(boolean successful) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ConstantsPreferences.GOOGLE_LOGGED_STATUS, successful);
@@ -128,9 +131,8 @@ public class SharedPrefsHelper {
             return !ipAddr.equals("");
 
         } catch (Exception e) {
-
+            return false;
         }
-        return false;
     }
 
     public boolean isNetworkAvailable(Context context) {
@@ -138,5 +140,17 @@ public class SharedPrefsHelper {
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
+
+    public void saveHistorySize(int size) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(ConstantsPreferences.HISTORY_SIZE, size);
+        Log.d(SHARED_PREFS_NAME, "\n history size saving: " + size);
+        editor.apply();
+    }
+
+    public int getSHistorySize(){
+        Log.d(SHARED_PREFS_NAME, "\n HISTORY SIZE: " + preferences.getInt(ConstantsPreferences.HISTORY_SIZE, HISTORY_SIZE_COUNT));
+        return preferences.getInt(ConstantsPreferences.HISTORY_SIZE, HISTORY_SIZE_COUNT);
+    }
 
 }
