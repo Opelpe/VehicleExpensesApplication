@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,8 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.adapters.HistoryAdapter;
+import com.pepe.vehicleexpensesapplication.data.model.HistoryItemModel;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentHistoryBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.refill.RefillActivity;
+
+import java.util.List;
 
 public class HistoryFragment extends Fragment implements HistoryContract.View {
 
@@ -37,8 +39,10 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     private HistoryContract.Presenter presenter;
     private RecyclerView historyRecycler;
-    private View.OnClickListener historyListener;
     private HistoryAdapter historyAdapter;
+
+    private final HistoryAdapter.HistoryItemListener historyItemListener = (itemID, position) ->
+            Log.w(HISTORY_FRAGMENT_TAG, "on Item Clicked ID: " + itemID + "\n position: " + position);
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -50,7 +54,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         presenter = new HistoryPresenter(this, getContext());
 
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
         setHasOptionsMenu(true);
 
@@ -61,24 +64,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
             presenter.onFloatingRefillButtonClicked();
         });
 
-        return root;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        historyRecycler = binding.historyRecyclerView;
-
-        historyListener = view -> {
-            TextView hItemIDText = view.findViewById(R.id.historyItemIdText);
-
-            Log.d(HISTORY_FRAGMENT_TAG, "Item clicked, ITEM ID: " + hItemIDText.getText().toString());
-        };
-        historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        historyAdapter = new HistoryAdapter(historyListener, getContext());
-        historyRecycler.setAdapter(historyAdapter);
-
+        return binding.getRoot();
     }
 
     @Override
@@ -115,6 +101,15 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void setHistoryItems(List<HistoryItemModel> parsedItems) {
+        historyRecycler = binding.historyRecyclerView;
+        historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        historyAdapter = new HistoryAdapter(historyItemListener, parsedItems);
+        historyRecycler.setAdapter(historyAdapter);
+
     }
 
     @Override

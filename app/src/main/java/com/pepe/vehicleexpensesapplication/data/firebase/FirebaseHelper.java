@@ -15,10 +15,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.pepe.vehicleexpensesapplication.data.model.HistoryItemModel;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.ConstantsPreferences;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseHelper {
@@ -31,8 +35,18 @@ public class FirebaseHelper {
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore firestore;
+    private FirebaseHistoryListener listener;
+    private FirebaseSuccessListener successListener;
 
     private static FirebaseHelper instance = null;
+
+    public interface FirebaseHistoryListener {
+        void onHistoryItemsLoaded(List<HistoryItemModel> items);
+    }
+
+    public interface FirebaseSuccessListener {
+        void successStatus(boolean success);
+    }
 
     public static FirebaseHelper getInstance(Context context) {
         if (instance == null) {
@@ -40,6 +54,14 @@ public class FirebaseHelper {
 
         }
         return instance;
+    }
+
+    public void setFirebaseListener(FirebaseHistoryListener listener) {
+        this.listener = listener;
+    }
+
+    public void setFirebaseSuccessListener(FirebaseSuccessListener listener) {
+        this.successListener = listener;
     }
 
     private FirebaseHelper(Context context) {
@@ -53,6 +75,7 @@ public class FirebaseHelper {
                 .build();
         firestore.setFirestoreSettings(settings);
     }
+
 
     public void logOutCurrentUser() {
         fAuth.signOut();
@@ -171,24 +194,50 @@ public class FirebaseHelper {
         return firestore.collection(ConstantsPreferences.COLLECTION_PROVIDERS);
     }
 
-    public Task<Void> saveNewRefillTask(float currentMileage, float refilledFuel, float priceOfFuel, String refillDate,
-                                        boolean fullCapacity, long currentTime, String dateCount, String refillNotes) {
-        FirebaseUser user = getCurrentUserCallback();
+    public void saveNewRefill(float currentMileage, float refilledFuel, float priceOfFuel, String refillDate,
+                              boolean fullCapacity, long currentTime, String dateCount, String refillNotes) {
 
-        Map refillMap = new HashMap();
-        refillMap.put("MILEAGE", currentMileage);
-        refillMap.put("FUEL", refilledFuel);
-        refillMap.put("PRICE", priceOfFuel);
-        refillMap.put("DATE", refillDate);
-        refillMap.put("DATE COUNT", dateCount);
-        refillMap.put("FULL TANK", fullCapacity);
-        refillMap.put("NOTES", refillNotes);
-        return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(user.getUid()).collection(ConstantsPreferences.COLLECTION_REFILL)
-                .document(String.valueOf(currentTime)).set(refillMap);
+        HistoryItemModel itemModel = new HistoryItemModel(refillDate, currentMileage, refilledFuel, priceOfFuel, refillNotes, fullCapacity, currentTime);
+
+        getRefillsListCollection()
+                .document(String.valueOf(currentTime))
+                .set(itemModel)
+                .addOnCompleteListener(task -> {
+                    successListener.successStatus(task.isSuccessful());
+                }).addOnFailureListener(e -> successListener.successStatus(false));
+
     }
 
+    public void getHistoryItems() {
+        if (getRefillsListCollection() != null) {
+
+            getRefillsListCollection()
+                    .orderBy("CURRENT_MILEAGE", Query.Direction.DESCENDING)
+                    .addSnapshotListener((value, error) -> {
+                        if (error != null) {
+                            Log.w(FIREBASE_HELPER_TAG, "Get history Items, list size: QUERY EXCEPTION: " + error.getCode());
+                        } else {
+                            if (value != null) {
+                                List<HistoryItemModel> items = new ArrayList<>();
+                                for (QueryDocumentSnapshot doc : value) {
+                                    HistoryItemModel historyItemModel = doc.toObject(HistoryItemModel.class);
+                                    items.add(historyItemModel);
+                                }
+                                Log.w(FIREBASE_HELPER_TAG, "Get history Items, list size items: " + items);
+                                Log.w(FIREBASE_HELPER_TAG, "Get history Items, list size: " + items.size());
+                                listener.onHistoryItemsLoaded(items);
+                            }
+                        }
+                    });
+        }
+    }
+
+
     public CollectionReference getRefillsListCollection() {
-        return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(getUid()).collection(ConstantsPreferences.COLLECTION_REFILL);
+        if (getUid() != null) {
+            return firestore.collection(ConstantsPreferences.COLLECTION_USERS).document(getUid()).collection(ConstantsPreferences.COLLECTION_REFILL);
+        } else return null;
+
     }
 
 }

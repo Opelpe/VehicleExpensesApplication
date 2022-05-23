@@ -60,13 +60,21 @@ public class MainFragment extends Fragment implements MainFragmentContract.View 
 
 
         switch (item.getItemId()) {
-            case R.id.action_synchronize_history:
+            case R.id.action_synchronize:
 
-                Toast.makeText(getContext(), "synchronize", Toast.LENGTH_SHORT).show();
+                if (presenter.checkIsAnonymous()) {
+                    Toast.makeText(getContext(), "Sign in & Synchronize data", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Your data is synchronized", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_change_google_account:
 
-                Toast.makeText(getContext(), "change_google_account", Toast.LENGTH_SHORT).show();
+                if (presenter.checkGoogleSignIn()){
+                    Toast.makeText(getContext(), "You're already sign with Google", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "Connect your account with Google", Toast.LENGTH_SHORT).show();
+                }
 
                 return true;
 
@@ -80,13 +88,9 @@ public class MainFragment extends Fragment implements MainFragmentContract.View 
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.my_main_nav_menu, menu);
 
-        boolean cloudStatus = presenter.getSynchronizationStatus();
-
-        if (!cloudStatus){
-            Log.d(MAIN_FRAGMENT_TAG, "on Create Options Menu : CLOUD STATUS OFF: " + cloudStatus );
+        if (presenter.checkIsAnonymous()){
             menu.findItem(R.id.action_synchronize).setIcon(R.drawable.ic_baseline_cloud_off_24);
         }else {
-            Log.d(MAIN_FRAGMENT_TAG, "on Create Options Menu : CLOUD STATUS ON: " + cloudStatus);
             menu.findItem(R.id.action_synchronize).setIcon(R.drawable.ic_baseline_cloud_queue_24);
         }
     }
@@ -101,17 +105,38 @@ public class MainFragment extends Fragment implements MainFragmentContract.View 
     public void setMainFragmentToolbar() {
 
         Toolbar toolbar = binding.getRoot().findViewById(R.id.mainFragmentToolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-
         try {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
             ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             bar.setTitle("VEA");
             bar.show();
-
         } catch (Exception e) {
-            Log.d(MAIN_FRAGMENT_TAG, "getsuppotrtedActionBar EXCEPTION CAPTURED: " + e);
+            Log.d(MAIN_FRAGMENT_TAG, "Setting MainFragment Toolbar EXCEPTION CAPTURED: " + e);
         }
+    }
+
+    @Override
+    public void setAverageUsageText(String averageUsage) {
+        binding.averageUsageScore.setText(averageUsage);
+    }
+
+    @Override
+    public void setTravelingCostText(String travelingCost) {
+        binding.travelingCostsScore.setText(travelingCost);
+    }
+
+    @Override
+    public void setLatestRefillView(String currentMileage, String fuelUsage, String fuelCost) {
+        binding.lRefillMileageScore.setText(currentMileage);
+        binding.lRefillUsageScore.setText(fuelUsage);
+        binding.lRefillPriceScore.setText(fuelCost);
+    }
+
+    @Override
+    public void setTotalCostsText(String addedMileage, String money, String volume) {
+        binding.tRefillAdMileageScore.setText(addedMileage);
+        binding.tRefillVolumeScore.setText(volume);
+        binding.tRefillCashScore.setText(money);
     }
 
     @Override

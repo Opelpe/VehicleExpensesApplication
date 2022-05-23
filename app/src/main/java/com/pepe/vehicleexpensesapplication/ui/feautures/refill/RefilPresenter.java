@@ -9,7 +9,7 @@ import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 public class RefilPresenter implements RefillContract.Presenter {
 
-    private static final String REFIL_PRESENTER_TAG = "REFIL_PRESENTER_TAG";
+    private static final String REFILL_PRESENTER_TAG = "REFILL_PRESENTER_TAG";
 
     private RefillContract.View view;
     private SharedPrefsHelper sharedPrefsHelper;
@@ -19,21 +19,36 @@ public class RefilPresenter implements RefillContract.Presenter {
 
     private String dateHistoryCount;
 
-    public RefilPresenter(RefillContract.View view, Context refilContext) {
+    private final FirebaseHelper.FirebaseSuccessListener firebaseSuccessListener = success -> {
+        if (success){
+            view.showToast("SUCCESSFULLY SAVED");
+            view.startMyMainActivity();
+        }else {
+            view.showToast("SAVING FAILED!");
+            view.returnFromRefillActivity();
+        }
+    };
+
+    public RefilPresenter(RefillContract.View view, Context refillContext) {
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance(refilContext);
-        sharedPrefsHelper = new SharedPrefsHelper(refilContext);
+        firebaseHelper = FirebaseHelper.getInstance(refillContext);
+        sharedPrefsHelper = new SharedPrefsHelper(refillContext);
         calendar = Calendar.getInstance();
     }
 
     @Override
     public void onViewCreated() {
 
+        setCurrentDate();
+        firebaseHelper.setFirebaseSuccessListener(firebaseSuccessListener);
+    }
+
+    private void setCurrentDate() {
         int day = getDay();
         int month = getMonth();
         int year = getYear();
 
-        Log.d(REFIL_PRESENTER_TAG, "on View Created, GET DATE: " + getDay() + " / " + getMonth() + " / " + getYear());
+        Log.d(REFILL_PRESENTER_TAG, "on View Created, GET DATE: " + getDay() + " / " + getMonth() + " / " + getYear());
 
         if (getDay() != 0 && getMonth() != 0 && getYear() != 0) {
             view.setCurrentDateEditText(day, month, year);
@@ -66,12 +81,12 @@ public class RefilPresenter implements RefillContract.Presenter {
     }
 
     @Override
-    public void saveRefillButtonClicked(String currMileage, String refillDate, String refilledFuel, String priceOfFuel, String refillNotes, boolean fullCapacity) {
+    public void saveRefillButtonClicked(String currMileage, String refillDate, String refilledFuel, String pricePerLiter, String refillNotes, boolean fullCapacity) {
 
-        if (!currMileage.trim().isEmpty() && !refillDate.trim().isEmpty() && !refilledFuel.trim().isEmpty() && !priceOfFuel.trim().isEmpty()) {
+        if (!currMileage.trim().isEmpty() && !refillDate.trim().isEmpty() && !refilledFuel.trim().isEmpty() && !pricePerLiter.trim().isEmpty()) {
             float fCurrMileage = Float.parseFloat(currMileage);
             float fRefillFuel = Float.parseFloat(refilledFuel);
-            float fFuelPrice = Float.parseFloat(priceOfFuel);
+            float fFuelPrice = Float.parseFloat(pricePerLiter);
             String truDate;
             if (dateHistoryCount == null) {
                 truDate = getYear() + String.valueOf(getMonth()) + getDay();
@@ -83,18 +98,11 @@ public class RefilPresenter implements RefillContract.Presenter {
                 }
             }
 
-            if (currMileage.contains("-") || refilledFuel.contains("-") || priceOfFuel.contains("-")) {
+            if (currMileage.contains("-") || refilledFuel.contains("-") || pricePerLiter.contains("-")) {
                 view.showToast("MILEAGE, AMOUNT OF FUEL AND PRICE \nCANNOT BE NEGATIVE");
             } else {
 
-                firebaseHelper.saveNewRefillTask(fCurrMileage, fRefillFuel, fFuelPrice, refillDate, fullCapacity, calendar.getTimeInMillis(), truDate, refillNotes)
-                        .addOnCompleteListener(task -> {
-                            view.showToast("SUCCESSFULLY SAVED");
-                            view.startMyMainActivity();
-                        }).addOnFailureListener(e -> {
-                            view.showToast("SAVING FAILED!");
-                            view.returnFromRefillActivity();
-                        });
+                firebaseHelper.saveNewRefill(fCurrMileage, fRefillFuel, fFuelPrice, refillDate, fullCapacity, calendar.getTimeInMillis(), truDate, refillNotes);
             }
         } else {
             if (currMileage.isEmpty()) {
@@ -106,7 +114,7 @@ public class RefilPresenter implements RefillContract.Presenter {
             if (refilledFuel.isEmpty()) {
                 view.showToast("HOW MANY LITTERS HAVE YOU REFILL?");
             }
-            if (priceOfFuel.isEmpty()) {
+            if (pricePerLiter.isEmpty()) {
                 view.showToast("WHAT WAS PRICE OF FUEL?");
             }
         }

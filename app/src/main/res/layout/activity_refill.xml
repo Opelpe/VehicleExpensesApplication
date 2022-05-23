@@ -142,6 +142,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
             android:backgroundTint="@color/green_dark"
+            android:checked="true"
             android:text="REFILL TO FULL"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/refillNotesTIL" />
