@@ -199,12 +199,14 @@ public class FirebaseHelper {
 
         HistoryItemModel itemModel = new HistoryItemModel(refillDate, currentMileage, refilledFuel, priceOfFuel, refillNotes, fullCapacity, currentTime);
 
-        getRefillsListCollection()
-                .document(String.valueOf(currentTime))
-                .set(itemModel)
-                .addOnCompleteListener(task -> {
-                    successListener.successStatus(task.isSuccessful());
-                }).addOnFailureListener(e -> successListener.successStatus(false));
+        if (getRefillsListCollection() != null) {
+            getRefillsListCollection()
+                    .document(String.valueOf(currentTime))
+                    .set(itemModel)
+                    .addOnCompleteListener(task -> {
+                        successListener.successStatus(task.isSuccessful());
+                    }).addOnFailureListener(e -> successListener.successStatus(false));
+        }
 
     }
 
