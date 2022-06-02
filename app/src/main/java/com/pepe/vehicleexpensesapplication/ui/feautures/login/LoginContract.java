@@ -7,6 +7,10 @@ public interface LoginContract {
         void startMyMainActivity();
 
         void startNewAccountActivity();
+
+        void showLoadingDialog();
+
+        void cancelLoadingDialog();
     }
 
     interface Presenter{

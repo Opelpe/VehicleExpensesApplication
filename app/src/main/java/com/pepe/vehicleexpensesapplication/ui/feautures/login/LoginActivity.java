@@ -1,5 +1,6 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.login;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,6 +22,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     private ActivityLoginBinding binding;
 
+    private AlertDialog.Builder loadingDialogBuilder;
+    private AlertDialog loadingDialog;
+
     private Button localLoginButton;
 
 
@@ -33,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         setContentView(binding.getRoot());
 
         presenter = new LoginPresenter(this, getApplicationContext());
+
+        loadingDialogBuilder = new AlertDialog.Builder(this);
 
         CheckBox startCheckBox = findViewById(R.id.startCheckBox);
         presenter.isCheckboxChecked(startCheckBox.isChecked());
@@ -47,6 +53,21 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         localLoginButton = findViewById(R.id.localLoginButton);
         localLoginButton.setOnClickListener(view -> presenter.onLocalLoginButtonClicked());
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        loadingDialogBuilder.setView(R.layout.dialog_create_user);
+        loadingDialog = loadingDialogBuilder.create();
+        loadingDialog.show();
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+        if (loadingDialog != null){
+            if (loadingDialog.isShowing()) {
+                loadingDialog.cancel();
+            }}
     }
 
     @Override

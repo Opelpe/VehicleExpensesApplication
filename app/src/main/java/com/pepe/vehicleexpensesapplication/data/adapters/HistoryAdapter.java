@@ -1,6 +1,5 @@
 package com.pepe.vehicleexpensesapplication.data.adapters;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pepe.vehicleexpensesapplication.R;
-import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
-import com.pepe.vehicleexpensesapplication.data.model.HistoryItemModel;
-import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
+import com.pepe.vehicleexpensesapplication.data.model.firebase.HistoryItemModel;
+import com.pepe.vehicleexpensesapplication.data.model.ui.HistoryUIModel;
 
 import java.util.List;
 
@@ -26,14 +24,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private HistoryItemListener historyItemListener;
 
 
-    private List<HistoryItemModel> historyList;
+    private List<HistoryUIModel> historyList;
 
     public interface HistoryItemListener{
         void onItemClicked(long itemID, int position);
     }
 
 
-    public HistoryAdapter(HistoryItemListener historyListener, List<HistoryItemModel> historyList) {
+    public HistoryAdapter(HistoryItemListener historyListener, List<HistoryUIModel> historyList) {
 
         this.historyItemListener = historyListener;
         this.historyList = historyList;
@@ -52,40 +50,40 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        HistoryViewHolder historyHolder = (HistoryViewHolder) holder;
-        Log.d(HISTORY_ADAPTER_TAG, "parsed items list ON BIND VIEW: " + historyList.size());
-        if (historyList.size() != 0) {
-
-            for (int i = 0; i < historyList.size(); i++) {
-
-                    if (position == i) {
-                        historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(historyList.get(position).ITEM_ID, position));
-
-                        historyHolder.hDateText.setText(historyList.get(i).REFILL_DATE);
-                        historyHolder.hMileageText.setText(historyList.get(i).CURR_MILEAGE_TEXT);
-
-                        historyHolder.hLittersText.setText(historyList.get(i).FUEL_AMOUNT_TEXT);
-                        historyHolder.hExpensesText.setText(historyList.get(i).FUEL_COST_TEXT);
-
-                        historyHolder.hAddedMileageText.setText(historyList.get(i).ADDED_MILEAGE_TEXT);
-
-                        if (historyList.get(i).FULL_TANK && position != historyList.size() - 1) {
-                            historyHolder.hAverageUsageText.setText(historyList.get(i).FUEL_USAGE_TEXT);
-                        }
-
-                        if (position == historyList.size() - 1) {
-
-                            historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(historyList.get(position).ITEM_ID, position));
-
-                            historyHolder.hDateText.setText(historyList.get(i).REFILL_DATE);
-
-                            historyHolder.hMileageText.setText(historyList.get(i).CURR_MILEAGE_TEXT);
-                            historyHolder.hLittersText.setText(historyList.get(i).FUEL_AMOUNT_TEXT);
-                            historyHolder.hExpensesText.setText(historyList.get(i).FUEL_COST_TEXT);
-                        }
-                }
-            }
-        }
+//        HistoryViewHolder historyHolder = (HistoryViewHolder) holder;
+//        Log.d(HISTORY_ADAPTER_TAG, "parsed items list ON BIND VIEW: " + historyList.size());
+//        if (historyList.size() != 0) {
+//
+//            for (int i = 0; i < historyList.size(); i++) {
+//
+//                    if (position == i) {
+//                        historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(historyList.get(position).ITEM_ID, position));
+//
+//                        historyHolder.hDateText.setText(historyList.get(i).REFILL_DATE);
+//                        historyHolder.hMileageText.setText(historyList.get(i).CURR_MILEAGE_TEXT);
+//
+//                        historyHolder.hLittersText.setText(historyList.get(i).FUEL_AMOUNT_TEXT);
+//                        historyHolder.hExpensesText.setText(historyList.get(i).FUEL_COST_TEXT);
+//
+//                        historyHolder.hAddedMileageText.setText(historyList.get(i).ADDED_MILEAGE_TEXT);
+//
+//                        if (historyList.get(i).FULL_TANK && position != historyList.size() - 1) {
+//                            historyHolder.hAverageUsageText.setText(historyList.get(i).FUEL_USAGE_TEXT);
+//                        }
+//
+//                        if (position == historyList.size() - 1) {
+//
+//                            historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(historyList.get(position).ITEM_ID, position));
+//
+//                            historyHolder.hDateText.setText(historyList.get(i).REFILL_DATE);
+//
+//                            historyHolder.hMileageText.setText(historyList.get(i).CURR_MILEAGE_TEXT);
+//                            historyHolder.hLittersText.setText(historyList.get(i).FUEL_AMOUNT_TEXT);
+//                            historyHolder.hExpensesText.setText(historyList.get(i).FUEL_COST_TEXT);
+//                        }
+//                }
+//            }
+//        }
     }
 
     @Override

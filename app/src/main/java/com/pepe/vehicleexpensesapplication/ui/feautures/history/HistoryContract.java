@@ -1,6 +1,7 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.history;
 
-import com.pepe.vehicleexpensesapplication.data.model.HistoryItemModel;
+import com.pepe.vehicleexpensesapplication.data.model.firebase.HistoryItemModel;
+import com.pepe.vehicleexpensesapplication.data.model.ui.HistoryUIModel;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface HistoryContract {
 
         void setHistoryFragmentToolbar();
 
-        void setHistoryItems(List<HistoryItemModel> parsedItems);
+        void setHistoryItems(List<HistoryUIModel> parsedItems);
 
     }
 

@@ -1,4 +1,4 @@
-package com.pepe.vehicleexpensesapplication.data.model;
+package com.pepe.vehicleexpensesapplication.data.model.firebase;
 
 import com.google.firebase.firestore.Exclude;
 
@@ -11,19 +11,19 @@ public class HistoryItemModel {
     public boolean FULL_TANK;
     public float CURRENT_MILEAGE;
 
-    @Exclude
-    public long ITEM_ID;
-
-    @Exclude
-    public String ADDED_MILEAGE_TEXT;
-    @Exclude
-    public String FUEL_USAGE_TEXT;
-    @Exclude
-    public String CURR_MILEAGE_TEXT;
-    @Exclude
-    public String FUEL_COST_TEXT;
-    @Exclude
-    public String FUEL_AMOUNT_TEXT;
+//    @Exclude
+//    public long ITEM_ID;
+//
+//    @Exclude
+//    public String ADDED_MILEAGE_TEXT;
+//    @Exclude
+//    public String FUEL_USAGE_TEXT;
+//    @Exclude
+//    public String CURR_MILEAGE_TEXT;
+//    @Exclude
+//    public String FUEL_COST_TEXT;
+//    @Exclude
+//    public String FUEL_AMOUNT_TEXT;
 
     public HistoryItemModel(String refillDate, float mileage, float fuelAmount, float fuelPrice, String refillNotes, boolean fullTank, long itemID) {
         this.REFILL_DATE = refillDate;
@@ -32,7 +32,7 @@ public class HistoryItemModel {
         this.FUEL_PRICE = fuelPrice;
         this.REFILL_NOTES = refillNotes;
         this.FULL_TANK = fullTank;
-        this.ITEM_ID = itemID;
+//        this.ITEM_ID = itemID;
 
     }
     public HistoryItemModel(){

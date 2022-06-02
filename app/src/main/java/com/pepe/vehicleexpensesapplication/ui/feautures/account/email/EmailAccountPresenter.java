@@ -45,7 +45,7 @@ public class EmailAccountPresenter implements EmailAccountContract.Presenter {
 
                                     } else {
                                         view.showNewAccountDialog();
-                                        Log.d(EMAIL_PRESENTER_TAG, "user dont't exist, must create new account");
+                                        Log.d(EMAIL_PRESENTER_TAG, "user don't exist, must create new account");
                                         loginNewUser(enteredEmail.trim());
                                     }
                                 }

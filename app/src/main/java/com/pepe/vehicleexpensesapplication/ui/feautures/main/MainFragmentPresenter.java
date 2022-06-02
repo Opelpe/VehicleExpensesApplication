@@ -3,7 +3,7 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.main;
 import android.content.Context;
 
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
-import com.pepe.vehicleexpensesapplication.data.model.HistoryItemModel;
+import com.pepe.vehicleexpensesapplication.data.model.firebase.HistoryItemModel;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 import java.util.List;

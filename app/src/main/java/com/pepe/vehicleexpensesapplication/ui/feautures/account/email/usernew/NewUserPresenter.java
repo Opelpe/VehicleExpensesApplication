@@ -10,6 +10,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
+import com.pepe.vehicleexpensesapplication.data.model.firebase.NewUserModel;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.ConstantsPreferences;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
@@ -26,6 +27,18 @@ public class NewUserPresenter implements NewUserContract.Presenter {
 
     private FirebaseHelper firebaseHelper;
 
+    private FirebaseHelper.FirebaseUserListener usersListener = new FirebaseHelper.FirebaseUserListener() {
+        @Override
+        public void usersData(NewUserModel userData) {
+            view.startMyMainActivity();
+        }
+
+        @Override
+        public void dataFailure(boolean failure) {
+
+        }
+    };
+
 
     public NewUserPresenter(NewUserContract.View view, Context applicationContext) {
         this.view = view;
@@ -36,6 +49,7 @@ public class NewUserPresenter implements NewUserContract.Presenter {
     @Override
     public void onViewCreated() {
         String email = sharedPrefsHelper.getEnteredEmail();
+
         view.setEmailEditText(email);
     }
 
@@ -87,7 +101,9 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                                                     view.cancelLoadingDialog();
                                                     view.showExistedAccountDialog(enteredEmail);
                                                 } else {
-                                                    createNewAccount(enteredEmail, enteredPassword, enteredName);
+//                                                    createNewAccount(enteredEmail, enteredPassword, enteredName);
+
+                                                    createNewUser(enteredEmail, enteredPassword, enteredName);
                                                 }
                                             });
                                         }
@@ -99,6 +115,11 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                 }
             }
         }
+    }
+
+    private void createNewUser(String enteredEmail, String enteredPassword, String enteredName) {
+        firebaseHelper.setFirebaseUsersListener(usersListener);
+        firebaseHelper.createNewUserAccount(enteredEmail, enteredPassword, enteredName);
     }
 
     @Override

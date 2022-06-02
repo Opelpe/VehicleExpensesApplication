@@ -11,19 +11,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Widget.AppCompat.ProgressBar"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="50dp"
+        app:layout_constraintEnd_toStartOf="@id/loadingText"
         />
 
     <TextView
-        android:layout_width="0dp"
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/loadingProgressBar"
         app:layout_constraintBottom_toBottomOf="@id/loadingProgressBar"
-        app:layout_constraintStart_toEndOf="@id/loadingProgressBar"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="CHECKING EMAIL ADRESS..."
-        android:paddingStart="30dp"
+        android:text="LOADING ACCOUNT..."
+        android:paddingStart="40dp"
         android:textSize="@dimen/text_normal"
         />
 

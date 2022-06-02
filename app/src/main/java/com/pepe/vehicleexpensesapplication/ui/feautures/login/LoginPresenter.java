@@ -3,7 +3,6 @@ package com.pepe.vehicleexpensesapplication.ui.feautures.login;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.android.gms.auth.api.Auth;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
@@ -17,6 +16,23 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     private SharedPrefsHelper sharedPrefsHelper;
 
+    private FirebaseHelper.FirebaseAnonymousListener firebaseAnonymousListener =
+            new FirebaseHelper.FirebaseAnonymousListener() {
+                @Override
+                public void loginSuccess(boolean success) {
+                    sharedPrefsHelper.saveIsAnonymous(success);
+                }
+
+                @Override
+                public void userData(String userID, String userEmail, String password, String name, String provider, boolean isAnonymous) {
+                    sharedPrefsHelper.saveIsAnonymous(isAnonymous);
+                    sharedPrefsHelper.saveSignedUserID(userID);
+                    view.cancelLoadingDialog();
+                    view.startMyMainActivity();
+
+                }
+            };
+
     public LoginPresenter(LoginContract.View view, Context loginContext){
         this.view = view;
         firebaseHelper = FirebaseHelper.getInstance(loginContext);
@@ -26,17 +42,22 @@ public class LoginPresenter implements LoginContract.Presenter{
     @Override
     public void onLocalLoginButtonClicked() {
 
-        if (!sharedPrefsHelper.getIsAnonymous()){
+        firebaseHelper.setFirebaseAnonymousListener(firebaseAnonymousListener);
+        firebaseHelper.signInAnonymouslyV2();
+        view.showLoadingDialog();
 
-            firebaseHelper.loginAnonymously();
-            sharedPrefsHelper.saveIsAnonymous(true);
-            view.startMyMainActivity();
-        }else{
-            sharedPrefsHelper.saveIsAnonymous(true);
-            sharedPrefsHelper.saveSignWEmailEmail(null);
-            sharedPrefsHelper.saveSignWGoogleEmail(null);
-            view.startMyMainActivity();
-        }
+
+//        if (!sharedPrefsHelper.getIsAnonymous()){
+//
+//            firebaseHelper.loginAnonymously();
+//            sharedPrefsHelper.saveIsAnonymous(true);
+//            view.startMyMainActivity();
+//        }else{
+//            sharedPrefsHelper.saveIsAnonymous(true);
+//            sharedPrefsHelper.saveSignWEmailEmail(null);
+//            sharedPrefsHelper.saveSignWGoogleEmail(null);
+//            view.startMyMainActivity();
+//        }
     }
 
     @Override

@@ -22,7 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.adapters.HistoryAdapter;
-import com.pepe.vehicleexpensesapplication.data.model.HistoryItemModel;
+import com.pepe.vehicleexpensesapplication.data.model.firebase.HistoryItemModel;
+import com.pepe.vehicleexpensesapplication.data.model.ui.HistoryUIModel;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentHistoryBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.refill.RefillActivity;
 
@@ -104,7 +105,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     }
 
     @Override
-    public void setHistoryItems(List<HistoryItemModel> parsedItems) {
+    public void setHistoryItems(List<HistoryUIModel> parsedItems) {
         historyRecycler = binding.historyRecyclerView;
         historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         historyAdapter = new HistoryAdapter(historyItemListener, parsedItems);
