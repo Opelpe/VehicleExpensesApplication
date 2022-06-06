@@ -12,7 +12,6 @@ import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class HistoryPresenter implements HistoryContract.Presenter {
 
@@ -28,21 +27,57 @@ public class HistoryPresenter implements HistoryContract.Presenter {
         @Override
         public void onHistoryItemsLoaded(List<HistoryItemModel> items) {
 
-            List<HistoryUIModel> parsedItems = items.stream().map(HistoryItemMapper::mapToUiModel).collect(Collectors.toList());
+          //  List<HistoryUIModel> parsedItems = items.stream().map(HistoryItemMapper::mapToUiModel).collect(Collectors.toList());
+
+            for (int i = 0; i < items.size(); i++) {
+
+//                if (i != items.size() - 1){
+//                    //parsedItems.remove(i);
+//                    parsedItems.add(HistoryItemMapper.mapToUiModel(items.get(i), items.get(i+1).CURRENT_MILEAGE));
+//                    Log.w(HISTORY_FR_PRESENTER_TAG, "parsed Items  >   1 SIZE: " + parsedItems.size());
+//                    view.setHistoryItems(parsedItems);
+//                }else{
+//                    if (items.size() < 2){
+//                        Log.w(HISTORY_FR_PRESENTER_TAG, "BEFORE ADD parsed Items < 2 SIZE: " + parsedItems.size());
+//                        parsedItems.remove(i);
+//                        parsedItems.add(HistoryItemMapper.mapToUiModel(items.get(i)));
+//                        Log.w(HISTORY_FR_PRESENTER_TAG, "parsed Items < 2 SIZE: " + parsedItems.size());
+//                    }
+//
+//                }
 
 
-            for (int i = 0 ; i < parsedItems.size(); i++){
-              if (i < parsedItems.size() - 1){
-
-
-              }else {
-//                  parsedItems.get(i).addedMileageText
-              }
             }
 
-                    //HistoryItemMapper.mapToUiModel(items)//getParsedItems(items);
+//            for (int i = 0 ; i < items.size(); i++){
+//              if (i != items.size() - 1){
+//
+//                  parsedItems.get(i).currMileageText = setCurrentMileageText(items.get(i).CURRENT_MILEAGE);
+//
+//                  float diff = items.get(i).CURRENT_MILEAGE - items.get(i + 1).CURRENT_MILEAGE;
+//                  parsedItems.get(i).addedMileageText = setAddedMileageText(diff);
+//
+//                  float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
+//                  parsedItems.get(i).fuelCostText = setFuelCostText(fuelCost);
+//
+//                  parsedItems.get(i).fuelAmountText = setFuelAmountText(items.get(i).FUEL_AMOUNT);
+//
+//                  float fuelUsage = (items.get(i).FUEL_AMOUNT * 100) / diff;
+//                  parsedItems.get(i).fuelUsageText = setFuelUsageText(fuelUsage);
+//
+//              }else {
+//                  parsedItems.get(i).currMileageText = setCurrentMileageText(items.get(i).CURRENT_MILEAGE);
+//
+//                float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
+//                parsedItems.get(i).fuelCostText = setFuelCostText(fuelCost);
+//
+//                parsedItems.get(i).fuelAmountText = setFuelAmountText(items.get(i).FUEL_AMOUNT);
+//              }
+//            }
 
-            view.setHistoryItems(parsedItems);
+//                    HistoryItemMapper.mapToUiModel(items);//getParsedItems(items);
+
+//            view.setHistoryItems(parsedItems);
         }
     };
 

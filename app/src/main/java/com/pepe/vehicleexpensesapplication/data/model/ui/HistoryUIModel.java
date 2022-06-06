@@ -14,13 +14,12 @@ public class HistoryUIModel {
     public String fuelAmountText;
     public String averageUsageText;
 
-    public HistoryUIModel(String addedMileage, String fuelUsage, String currentMileage, String fuelCost, String fuelAmount, String averageUsage) {
+    public HistoryUIModel(String addedMileage, String fuelUsage, String currentMileage, String fuelCost, String fuelAmount) {
         this.addedMileageText = addedMileage;
         this.fuelUsageText = fuelUsage;
         this.currMileageText = currentMileage;
         this.fuelCostText = fuelCost;
         this.fuelAmountText = fuelAmount;
-        this.averageUsageText = averageUsage;
     }
 
     public HistoryUIModel(){
