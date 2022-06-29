@@ -28,4 +28,5 @@ public class ConstantsPreferences {
     public static final String HISTORY_SIZE = "HISTORY_SIZE";
     public static final String REFILL_DATES = "REFILL_DATES";
     public static final String HISTORY_ITEM_ID = "HISTORY_ITEM_ID";
+    public static final String DEFAULT_DATE = "DEFAULT_DATE";
 }

@@ -30,7 +30,7 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
         @Override
         public void usersData(NewUserModel userData) {
             view.cancelLoadingDialog();
-            view.showToast("SUCCESSFULLY LOGGED IN \n" + userData.USER_EMAIL);
+            view.showToast("SUCCESSFULLY LOGGED IN \n" + userData.userEmail);
             view.startMyMainActivity();
         }
 
@@ -41,10 +41,10 @@ public class NewAccountPresenter implements NewAccountContract.Presenter {
     };
 
 
-    public NewAccountPresenter(NewAccountContract.View view, Context applicationContext) {
+    public NewAccountPresenter(NewAccountContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance(applicationContext);
-        sharedPrefsHelper = new SharedPrefsHelper(applicationContext);
+        firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = prefsHelper;
     }
 
     @Override

@@ -46,7 +46,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     private void checkUser() {
         if (newUserModel != null) {
 
-            if (newUserModel.USER_ID != null) {
+            if (newUserModel.userID != null) {
 
                 if (sharedPrefsHelper.getCheckboxStatus()) {
                     handleStartMyMainActivity();
@@ -54,10 +54,10 @@ public class SplashPresenter implements SplashContract.Presenter {
                 } else {
                     handleStartLoginActivity();
                 }
-                Log.d(MY_SPLASH_TAG, "Listener data, user ID: " + newUserModel.USER_ID);
+                Log.d(MY_SPLASH_TAG, "Listener data, user ID: " + newUserModel.userID);
             } else {
                 handleStartLoginActivity();
-                Log.d(MY_SPLASH_TAG, "Listener data, user ID NULL: " + newUserModel.USER_ID);
+                Log.d(MY_SPLASH_TAG, "Listener data, user ID NULL: " + newUserModel.userID);
             }
 
         } else {
@@ -66,11 +66,11 @@ public class SplashPresenter implements SplashContract.Presenter {
         }
     }
 
-    public SplashPresenter(SplashContract.View view, Context context) {
+    public SplashPresenter(SplashContract.View view, SharedPrefsHelper prefsHelper, Context context) {
         this.view = view;
 
-        firebaseHelper = FirebaseHelper.getInstance(context);
-        sharedPrefsHelper = new SharedPrefsHelper(context);
+        firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = prefsHelper;
         splashContext = context;
 
     }
@@ -80,7 +80,7 @@ public class SplashPresenter implements SplashContract.Presenter {
         Log.d(MY_SPLASH_TAG, "View created");
         handler.postDelayed(() -> {
             firebaseHelper.setFirebaseUsersListener(usersListener);
-            firebaseHelper.getCurrentUserCallbackV2();
+            firebaseHelper.checkCurrentUserCallback();
         }, 250);
 //        handler.postDelayed(() -> {
 //

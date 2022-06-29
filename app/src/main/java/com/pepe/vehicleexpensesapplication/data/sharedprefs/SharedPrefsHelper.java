@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SharedPrefsHelper {
@@ -24,6 +23,7 @@ public class SharedPrefsHelper {
     public static final boolean IS_ANONYMOUS = false;
     private static final int HISTORY_SIZE_COUNT = 0;
     private static final List<String> ID_OF_HISTORY_ITEM = new ArrayList<>();
+    private static final int DEFAULT_DATE_INT = 00000000;
 
     private SharedPreferences preferences;
 
@@ -153,4 +153,13 @@ public class SharedPrefsHelper {
         return preferences.getInt(ConstantsPreferences.HISTORY_SIZE, HISTORY_SIZE_COUNT);
     }
 
+    public void saveSelectedDate(int date) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(ConstantsPreferences.DEFAULT_DATE, date);
+        editor.apply();
+    }
+
+    public int getSelectedDate(){
+        return preferences.getInt(ConstantsPreferences.DEFAULT_DATE, DEFAULT_DATE_INT);
+    }
 }

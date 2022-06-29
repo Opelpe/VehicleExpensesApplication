@@ -1,8 +1,8 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.history;
 
-import android.content.Context;
 import android.util.Log;
 
+import com.pepe.vehicleexpensesapplication.data.adapters.HistoryAdapter;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
 import com.pepe.vehicleexpensesapplication.data.model.firebase.HistoryItemModel;
 import com.pepe.vehicleexpensesapplication.data.model.mapper.HistoryItemMapper;
@@ -11,7 +11,6 @@ import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HistoryPresenter implements HistoryContract.Presenter {
 
@@ -23,68 +22,76 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     private FirebaseHelper firebaseHelper;
 
+    private long itemId;
+
+    private List<HistoryUIModel> parsedItems;
     private final FirebaseHelper.FirebaseHistoryListener firebaseHistoryListener = new FirebaseHelper.FirebaseHistoryListener() {
         @Override
         public void onHistoryItemsLoaded(List<HistoryItemModel> items) {
 
-          //  List<HistoryUIModel> parsedItems = items.stream().map(HistoryItemMapper::mapToUiModel).collect(Collectors.toList());
-
+            parsedItems = new ArrayList<>();
+            view.setHistoryItems(parsedItems, items, historyDeleteListener);
             for (int i = 0; i < items.size(); i++) {
 
-//                if (i != items.size() - 1){
-//                    //parsedItems.remove(i);
-//                    parsedItems.add(HistoryItemMapper.mapToUiModel(items.get(i), items.get(i+1).CURRENT_MILEAGE));
-//                    Log.w(HISTORY_FR_PRESENTER_TAG, "parsed Items  >   1 SIZE: " + parsedItems.size());
-//                    view.setHistoryItems(parsedItems);
-//                }else{
-//                    if (items.size() < 2){
-//                        Log.w(HISTORY_FR_PRESENTER_TAG, "BEFORE ADD parsed Items < 2 SIZE: " + parsedItems.size());
-//                        parsedItems.remove(i);
-//                        parsedItems.add(HistoryItemMapper.mapToUiModel(items.get(i)));
-//                        Log.w(HISTORY_FR_PRESENTER_TAG, "parsed Items < 2 SIZE: " + parsedItems.size());
-//                    }
-//
-//                }
+                if (i != items.size() - 1) {
+                    Log.w(HISTORY_FR_PRESENTER_TAG, "striong builder DATE: ");
+                    parsedItems.add(HistoryItemMapper.mapToUiModel(items.get(i), items.get(i + 1).currentMileage));
+                    Log.w(HISTORY_FR_PRESENTER_TAG, "parsed Items  >   1 SIZE: " + parsedItems.size());
+                    view.setHistoryItems(parsedItems, items, historyDeleteListener);
+                } else {
+                    Log.w(HISTORY_FR_PRESENTER_TAG, "striong builder DATE: ");
+                    Log.w(HISTORY_FR_PRESENTER_TAG, "BEFORE ADD parsed Items < 2 SIZE: " + parsedItems.size());
 
+                    parsedItems.add(HistoryItemMapper.mapToUiModel(items.get(i)));
 
+                    view.setHistoryItems(parsedItems, items, historyDeleteListener);
+                }
             }
 
-//            for (int i = 0 ; i < items.size(); i++){
-//              if (i != items.size() - 1){
-//
-//                  parsedItems.get(i).currMileageText = setCurrentMileageText(items.get(i).CURRENT_MILEAGE);
-//
-//                  float diff = items.get(i).CURRENT_MILEAGE - items.get(i + 1).CURRENT_MILEAGE;
-//                  parsedItems.get(i).addedMileageText = setAddedMileageText(diff);
-//
-//                  float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
-//                  parsedItems.get(i).fuelCostText = setFuelCostText(fuelCost);
-//
-//                  parsedItems.get(i).fuelAmountText = setFuelAmountText(items.get(i).FUEL_AMOUNT);
-//
-//                  float fuelUsage = (items.get(i).FUEL_AMOUNT * 100) / diff;
-//                  parsedItems.get(i).fuelUsageText = setFuelUsageText(fuelUsage);
-//
-//              }else {
-//                  parsedItems.get(i).currMileageText = setCurrentMileageText(items.get(i).CURRENT_MILEAGE);
-//
-//                float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
-//                parsedItems.get(i).fuelCostText = setFuelCostText(fuelCost);
-//
-//                parsedItems.get(i).fuelAmountText = setFuelAmountText(items.get(i).FUEL_AMOUNT);
-//              }
-//            }
-
-//                    HistoryItemMapper.mapToUiModel(items);//getParsedItems(items);
-
-//            view.setHistoryItems(parsedItems);
         }
     };
 
-    public HistoryPresenter(HistoryContract.View view, Context historyContext) {
+    private HistoryAdapter.DeleteItemListener historyDeleteListener = new HistoryAdapter.DeleteItemListener() {
+        @Override
+        public void onClick(long itemID) {
+            showDeleteDialog();
+            itemId = itemID;
+        }
+    };
+
+    private FirebaseHelper.FirebaseSuccessListener firebaseSuccessListener = new FirebaseHelper.FirebaseSuccessListener() {
+        @Override
+        public void successStatus(boolean success) {
+            if (success) {
+                view.showToast("Delete succeed!");
+            } else {
+                view.showToast("Something goes wrong!");
+            }
+        }
+    };
+
+    private void showDeleteDialog() {
+        view.showDeleteItemDialog();
+    }
+
+    @Override
+    public void deleteItemConfirmed() {
+        deleteItem();
+    }
+
+    private void deleteItem() {
+        if (itemId != 0) {
+            String historyItemID = String.valueOf(itemId);
+            firebaseHelper.deleteHistoryItem(historyItemID);
+        } else {
+            view.showToast("Something goes wrong!");
+        }
+    }
+
+    public HistoryPresenter(HistoryContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        sharedPrefsHelper = new SharedPrefsHelper(historyContext);
-        firebaseHelper = FirebaseHelper.getInstance(historyContext);
+        sharedPrefsHelper = prefsHelper;
+        firebaseHelper = FirebaseHelper.getInstance();
     }
 
     @Override
@@ -92,100 +99,11 @@ public class HistoryPresenter implements HistoryContract.Presenter {
         try {
             view.setHistoryFragmentToolbar();
             firebaseHelper.setFirebaseListener(firebaseHistoryListener);
+            firebaseHelper.setFirebaseSuccessListener(firebaseSuccessListener);
             firebaseHelper.getHistoryItems();
 
         } catch (Exception e) {
             Log.w(HISTORY_FR_PRESENTER_TAG, "On View Created EXCEPTION CAPTURED: " + e);
-        }
-    }
-
-//    private List<HistoryItemModel> getParsedItems(List<HistoryItemModel> items) {
-//        List<HistoryItemModel> parsedItems = new ArrayList<>(items);
-//
-//        for (int i = 0; items.size() > i; i++) {
-//
-//            if (i != items.size() - 1) {
-//                parsedItems.get(i).CURR_MILEAGE_TEXT = setCurrentMileageText(parsedItems.get(i).CURRENT_MILEAGE);
-//
-//                float diff = parsedItems.get(i).CURRENT_MILEAGE - parsedItems.get(i + 1).CURRENT_MILEAGE;
-//                parsedItems.get(i).ADDED_MILEAGE_TEXT = setAddedMileageText(diff);
-//
-//                float fuelCost = parsedItems.get(i).FUEL_AMOUNT * parsedItems.get(i).FUEL_PRICE;
-//                parsedItems.get(i).FUEL_COST_TEXT = setFuelCostText(fuelCost);
-//
-//                parsedItems.get(i).FUEL_AMOUNT_TEXT = setFuelAmountText(parsedItems.get(i).FUEL_AMOUNT);
-//
-//                float fuelUsage = (parsedItems.get(i).FUEL_AMOUNT * 100) / diff;
-//                parsedItems.get(i).FUEL_USAGE_TEXT = setFuelUsageText(fuelUsage);
-//
-//                Log.w(HISTORY_FR_PRESENTER_TAG, "get parsedItems, ALL ITEMS: " + parsedItems);
-//            } else {
-//
-//                parsedItems.get(i).CURR_MILEAGE_TEXT = setCurrentMileageText(parsedItems.get(i).CURRENT_MILEAGE);
-//
-//                float fuelCost = parsedItems.get(i).FUEL_AMOUNT * parsedItems.get(i).FUEL_PRICE;
-//                parsedItems.get(i).FUEL_COST_TEXT = setFuelCostText(fuelCost);
-//
-//                parsedItems.get(i).FUEL_AMOUNT_TEXT = setFuelAmountText(parsedItems.get(i).FUEL_AMOUNT);
-//
-//                Log.w(HISTORY_FR_PRESENTER_TAG, "get parsedItems, LAST ITEM: " + parsedItems);
-//            }
-//        }
-//        Log.w(HISTORY_FR_PRESENTER_TAG, "get parsedItems, before RETURN: " + parsedItems);
-//        return parsedItems;
-//    }
-
-    private String setFuelUsageText(float fuelUsage) {
-        if (fuelUsage > 99) {
-            return String.format("%.1f", fuelUsage);
-        } else {
-            if (fuelUsage > 999) {
-                return String.format("%.0f", fuelUsage);
-            } else {
-                if (fuelUsage > 9999) {
-                    return "# , #";
-                } else {
-                    return String.format("%.2f", fuelUsage);
-                }
-            }
-        }
-    }
-
-    private String setAddedMileageText(float diff) {
-        if (diff > 999) {
-            return "+" + String.format("%.0f", diff);
-        } else {
-            if (diff > 99999) {
-                return ("+  --- ---");
-            }
-            return "+" + String.format("%.1f", diff);
-        }
-    }
-
-    private String setFuelAmountText(float fuelAmount) {
-        if (fuelAmount > 9999) {
-            return "+9999";
-        } else {
-            return "+" + String.format("%.0f", fuelAmount);
-        }
-    }
-
-    private String setFuelCostText(float fuelCost) {
-        if (fuelCost > 999) {
-            return String.format("%.0f", fuelCost);
-        } else {
-            if (fuelCost > 9999) {
-                return "+9999";
-            }
-            return String.format("%.2f", fuelCost);
-        }
-    }
-
-    private String setCurrentMileageText(float parsedItems) {
-        if (parsedItems > 999999) {
-            return "+999999";
-        } else {
-            return String.format("%.1f", parsedItems);
         }
     }
 

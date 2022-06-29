@@ -20,10 +20,10 @@ public class ExistedEmailPresenter implements ExistedEmailContract.Presenter {
 
     private FirebaseHelper firebaseHelper;
 
-    public ExistedEmailPresenter(ExistedEmailContract.View view, Context context) {
+    public ExistedEmailPresenter(ExistedEmailContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        sharedPrefsHelper = new SharedPrefsHelper(context);
-        firebaseHelper = FirebaseHelper.getInstance(context);
+        sharedPrefsHelper = prefsHelper;
+        firebaseHelper = FirebaseHelper.getInstance();
     }
 
     @Override

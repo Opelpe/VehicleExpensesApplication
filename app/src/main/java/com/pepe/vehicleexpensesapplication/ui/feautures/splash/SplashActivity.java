@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivitySplashBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.login.LoginActivity;
@@ -27,7 +28,10 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
         setContentView(binding.getRoot());
 
-        presenter = new SplashPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+
+        presenter = new SplashPresenter(this, sharedPrefsHelper, getApplicationContext());
 
         presenter.onViewCreated();
     }

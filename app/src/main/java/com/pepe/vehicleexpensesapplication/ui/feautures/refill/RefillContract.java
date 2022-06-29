@@ -7,7 +7,7 @@ public interface RefillContract {
 
         void makeDateDialog();
 
-        void setCurrentDateEditText(int day, int month, int year);
+        void setDateEditText(String builder);
 
         void showToast(String toastMsg);
 
@@ -31,6 +31,6 @@ public interface RefillContract {
 
         void saveRefillButtonClicked(String currMileage, String refillDate, String refilledFuel, String priceOfFuel, String refillNotes, boolean fullCapacity);
 
-        void setDateHistoryCount(int i, int i1, int date);
+        void setSelectedDate(int day, int month, int year);
     }
 }

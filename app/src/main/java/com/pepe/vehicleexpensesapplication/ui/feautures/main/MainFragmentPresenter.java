@@ -19,7 +19,7 @@ public class MainFragmentPresenter implements MainFragmentContract.Presenter {
     private SharedPrefsHelper sharedPrefsHelper;
 
     private final FirebaseHelper.FirebaseHistoryListener firebaseHistoryListener = items -> {
-
+        //  items.stream().map(HistoryItem Mapper::mapToUiModel).collect(Collectors.toList());
         if (items.size() > 0) {
             setTotalRefillScores(items);
             setLatestRefillScores(items);
@@ -28,13 +28,43 @@ public class MainFragmentPresenter implements MainFragmentContract.Presenter {
             setAverageUsageScore(items);
             setTravelingCostScore(items);
         }
+
+//        for (int i = 0 ; i < items.size(); i++){
+//              if (i != items.size() - 1){
+//
+//                  parsedItems.get(i).currMileageText = setCurrentMileageText(items.get(i).CURRENT_MILEAGE);
+//
+//                  float diff = items.get(i).CURRENT_MILEAGE - items.get(i + 1).CURRENT_MILEAGE;
+//                  parsedItems.get(i).addedMileageText = setAddedMileageText(diff);
+//
+//                  float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
+//                  parsedItems.get(i).fuelCostText = setFuelCostText(fuelCost);
+//
+//                  parsedItems.get(i).fuelAmountText = setFuelAmountText(items.get(i).FUEL_AMOUNT);
+//
+//                  float fuelUsage = (items.get(i).FUEL_AMOUNT * 100) / diff;
+//                  parsedItems.get(i).fuelUsageText = setFuelUsageText(fuelUsage);
+//
+//              }else {
+//                  parsedItems.get(i).currMileageText = setCurrentMileageText(items.get(i).CURRENT_MILEAGE);
+//
+//                float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
+//                parsedItems.get(i).fuelCostText = setFuelCostText(fuelCost);
+//
+//                parsedItems.get(i).fuelAmountText = setFuelAmountText(items.get(i).FUEL_AMOUNT);
+//              }
+//            }
+
+//                    HistoryItemMapper.mapToUiModel(items);//getParsedItems(items);
+
+//            view.setHistoryItems(parsedItems);
     };
 
 
-    public MainFragmentPresenter(MainFragmentContract.View view, Context mainContext) {
+    public MainFragmentPresenter(MainFragmentContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        sharedPrefsHelper = new SharedPrefsHelper(mainContext);
-        firebaseHelper = FirebaseHelper.getInstance(mainContext);
+        sharedPrefsHelper = prefsHelper;
+        firebaseHelper = FirebaseHelper.getInstance();
     }
 
     @Override
@@ -61,11 +91,11 @@ public class MainFragmentPresenter implements MainFragmentContract.Presenter {
 
     private void setAverageUsageScore(List<HistoryItemModel> items) {
 
-            float totalAddedMileage = items.get(0).CURRENT_MILEAGE - items.get(items.size() - 1).CURRENT_MILEAGE;
+            float totalAddedMileage = items.get(0).currentMileage - items.get(items.size() - 1).currentMileage;
             float totalFuelAmount = 0;
             for (int i = 0; items.size() > i; i++) {
                 if (i != items.size() - 1) {
-                    totalFuelAmount += items.get(i).FUEL_AMOUNT;
+                    totalFuelAmount += items.get(i).fuelAmount;
                 }
             }
             float usage = (totalFuelAmount * 100) / totalAddedMileage;
@@ -81,9 +111,9 @@ public class MainFragmentPresenter implements MainFragmentContract.Presenter {
             float totalTravelCosts = 0;
             for (int i = 0; items.size() > i; i++) {
                 if (i != items.size() - 1) {
-                    float diff = items.get(i).CURRENT_MILEAGE - items.get(i + 1).CURRENT_MILEAGE;
-                    float fuelUsage = (items.get(i).FUEL_AMOUNT * 100) / diff;
-                    float pricePer100 = fuelUsage * (items.get(i).FUEL_PRICE);
+                    float diff = items.get(i).currentMileage - items.get(i + 1).currentMileage;
+                    float fuelUsage = (items.get(i).fuelAmount * 100) / diff;
+                    float pricePer100 = fuelUsage * (items.get(i).fuelPrice);
                     totalTravelCosts += pricePer100;
                 }
             }
@@ -95,18 +125,18 @@ public class MainFragmentPresenter implements MainFragmentContract.Presenter {
     private void setLatestRefillScores(List<HistoryItemModel> items) {
 
         if (items.size() > 1){
-            float addedMileage = items.get(0).CURRENT_MILEAGE - items.get(1).CURRENT_MILEAGE;
-            float fuelUsage = (items.get(0).FUEL_AMOUNT * 100) / addedMileage;
-            float fuelCost = items.get(0).FUEL_AMOUNT * items.get(0).FUEL_PRICE;
-            float currMileage = items.get(0).CURRENT_MILEAGE;
+            float addedMileage = items.get(0).currentMileage - items.get(1).currentMileage;
+            float fuelUsage = (items.get(0).fuelAmount * 100) / addedMileage;
+            float fuelCost = items.get(0).fuelAmount * items.get(0).fuelPrice;
+            float currMileage = items.get(0).currentMileage;
 
             String currentMileageText = String.format("%.1f", currMileage);
             String fuelUsageText = String.format("%.1f", fuelUsage);
             String fuelCostText = String.format("%.0f", fuelCost);
             view.setLatestRefillView(currentMileageText, fuelUsageText, fuelCostText);
         }else {
-            float fuelCost = items.get(0).FUEL_AMOUNT * items.get(0).FUEL_PRICE;
-            float currMileage = items.get(0).CURRENT_MILEAGE;
+            float fuelCost = items.get(0).fuelAmount * items.get(0).fuelPrice;
+            float currMileage = items.get(0).currentMileage;
 
             String currentMileageText = String.format("%.1f", currMileage);
             String fuelUsageText ="---";
@@ -117,16 +147,16 @@ public class MainFragmentPresenter implements MainFragmentContract.Presenter {
 
     private void setTotalRefillScores(List<HistoryItemModel> items) {
 
-            float totalAddedMileage = items.get(0).CURRENT_MILEAGE - items.get(items.size() - 1).CURRENT_MILEAGE;
+            float totalAddedMileage = items.get(0).currentMileage - items.get(items.size() - 1).currentMileage;
             float totalCosts = 0;
             float totalVolume = 0;
 
             for (int i = 0; items.size() > i; i++) {
 
-                float fuelCost = items.get(i).FUEL_AMOUNT * items.get(i).FUEL_PRICE;
+                float fuelCost = items.get(i).fuelAmount * items.get(i).fuelPrice;
 
                 totalCosts += fuelCost;
-                totalVolume += items.get(i).FUEL_AMOUNT;
+                totalVolume += items.get(i).fuelAmount;
             }
             String totalMileageText = "+" + String.format("%.0f", totalAddedMileage);
             String totalMoneyText = String.format("%.0f", totalCosts);

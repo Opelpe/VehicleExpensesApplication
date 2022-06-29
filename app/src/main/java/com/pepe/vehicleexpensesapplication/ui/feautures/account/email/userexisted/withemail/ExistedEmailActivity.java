@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityExistedEmailBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 
@@ -46,7 +47,9 @@ public class ExistedEmailActivity extends AppCompatActivity implements ExistedEm
 
         setContentView(binding.getRoot());
 
-        presenter = new ExistedEmailPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new ExistedEmailPresenter(this, sharedPrefsHelper);
 
         builder = new AlertDialog.Builder(this);
 

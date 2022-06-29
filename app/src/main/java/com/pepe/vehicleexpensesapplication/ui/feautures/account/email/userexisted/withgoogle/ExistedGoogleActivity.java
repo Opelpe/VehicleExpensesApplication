@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.sharedprefs.ConstantsPreferences;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityExistedGoogleBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 
@@ -45,7 +46,9 @@ public class ExistedGoogleActivity extends AppCompatActivity implements ExistedG
 
         setContentView(binding.getRoot());
 
-        presenter = new ExistedGooglePresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new ExistedGooglePresenter(this, sharedPrefsHelper);
 
         builder = new AlertDialog.Builder(this);
 

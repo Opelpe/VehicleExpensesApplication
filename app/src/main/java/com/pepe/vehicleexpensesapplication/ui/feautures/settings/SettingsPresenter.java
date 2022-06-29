@@ -19,10 +19,10 @@ public class SettingsPresenter implements SettingsContract.Presenter{
 
     private FirebaseHelper firebaseHelper;
 
-    public SettingsPresenter(SettingsContract.View view, Context context){
+    public SettingsPresenter(SettingsContract.View view, SharedPrefsHelper prefsHelper){
         this.view = view;
-        sharedPrefsHelper = new SharedPrefsHelper(context);
-        firebaseHelper = FirebaseHelper.getInstance(context);
+        sharedPrefsHelper = prefsHelper;
+        firebaseHelper = FirebaseHelper.getInstance();
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.history;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +19,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +28,7 @@ import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.adapters.HistoryAdapter;
 import com.pepe.vehicleexpensesapplication.data.model.firebase.HistoryItemModel;
 import com.pepe.vehicleexpensesapplication.data.model.ui.HistoryUIModel;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentHistoryBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.refill.RefillActivity;
 
@@ -42,8 +47,12 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     private RecyclerView historyRecycler;
     private HistoryAdapter historyAdapter;
 
-    private final HistoryAdapter.HistoryItemListener historyItemListener = (itemID, position) ->
-            Log.w(HISTORY_FRAGMENT_TAG, "on Item Clicked ID: " + itemID + "\n position: " + position);
+    private AlertDialog.Builder deleteItemDialogBuilder;
+    private AlertDialog deleteItemDialog;
+
+    private final HistoryAdapter.HistoryItemListener historyItemListener = (itemID) ->
+            Log.w(HISTORY_FRAGMENT_TAG, "on Item Clicked ID: " + itemID);
+
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -52,11 +61,15 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        presenter = new HistoryPresenter(this, getContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(binding.getRoot().getContext());
+
+        presenter = new HistoryPresenter(this, sharedPrefsHelper);
 
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
 
         setHasOptionsMenu(true);
+
+        deleteItemDialogBuilder = new AlertDialog.Builder(getContext());
 
         presenter.onViewCreated();
 
@@ -105,12 +118,26 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     }
 
     @Override
-    public void setHistoryItems(List<HistoryUIModel> parsedItems) {
+    public void setHistoryItems(List<HistoryUIModel> uiModels, List<HistoryItemModel> itemModels, HistoryAdapter.DeleteItemListener deleteItemListener) {
         historyRecycler = binding.historyRecyclerView;
         historyRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        historyAdapter = new HistoryAdapter(historyItemListener, parsedItems);
+        historyAdapter = new HistoryAdapter(historyItemListener, uiModels, itemModels, deleteItemListener);
         historyRecycler.setAdapter(historyAdapter);
 
+    }
+
+    @Override
+    public void showToast(String toastMsg) {
+        Toast.makeText(binding.getRoot().getContext(), toastMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDeleteItemDialog() {
+        deleteItemDialogBuilder.setMessage("Do you want to delete this?");
+        deleteItemDialogBuilder.setPositiveButton("DELETE", (dialogInterface, i) -> presenter.deleteItemConfirmed());
+        deleteItemDialogBuilder.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.cancel());
+        deleteItemDialog = deleteItemDialogBuilder.create();
+        deleteItemDialog.show();
     }
 
     @Override

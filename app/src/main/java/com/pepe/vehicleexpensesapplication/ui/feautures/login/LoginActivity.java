@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityLoginBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.account.NewAccountActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
@@ -36,7 +37,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         setContentView(binding.getRoot());
 
-        presenter = new LoginPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new LoginPresenter(this, sharedPrefsHelper);
 
         loadingDialogBuilder = new AlertDialog.Builder(this);
 

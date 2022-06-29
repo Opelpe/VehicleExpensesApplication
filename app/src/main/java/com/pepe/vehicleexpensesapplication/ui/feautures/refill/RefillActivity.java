@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityRefillBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 
@@ -38,7 +39,9 @@ public class RefillActivity extends AppCompatActivity implements RefillContract.
 
         setContentView(binding.getRoot());
 
-        presenter = new RefilPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new RefilPresenter(this, sharedPrefsHelper);
 
         Toolbar toolbar = findViewById(R.id.myRefillToolbar);
         setSupportActionBar(toolbar);
@@ -78,6 +81,7 @@ public class RefillActivity extends AppCompatActivity implements RefillContract.
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == R.id.action_back)
         switch (item.getItemId()) {
             case R.id.action_back:
                 presenter.backFromRefillActivity();
@@ -89,19 +93,15 @@ public class RefillActivity extends AppCompatActivity implements RefillContract.
     }
 
     @Override
-    public void setCurrentDateEditText(int day, int month, int year) {
-
-        Log.d(REFIL_ACTIVITY_TAG, "get date: " + day + " / " + month + " / " + year);
-
-        binding.refillDateTIET.setText(day + " / " + month + " / " + year);
+    public void setDateEditText(String builder) {
+        binding.refillDateTIET.setText(builder);
     }
 
     @Override
     public void makeDateDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, i, i1, i2) -> {
             int month = i1 + 1;
-            binding.refillDateTIET.setText(i2 + " / " + month + " / " + i);
-            presenter.setDateHistoryCount(i, i1, i2);
+            presenter.setSelectedDate(i2, month, i);
         }, presenter.getYear(), presenter.getMonth() - 1, presenter.getDay());
         datePickerDialog.show();
     }

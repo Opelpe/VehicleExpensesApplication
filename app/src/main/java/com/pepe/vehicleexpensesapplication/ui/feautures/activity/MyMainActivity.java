@@ -36,7 +36,9 @@ public class MyMainActivity extends AppCompatActivity implements MyMainContract.
 
         binding = ActivityMyMainBinding.inflate(getLayoutInflater());
 
-        presenter = new MyMainPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new MyMainPresenter(this, sharedPrefsHelper);
 
         setContentView(binding.getRoot());
 

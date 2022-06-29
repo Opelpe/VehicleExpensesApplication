@@ -17,10 +17,10 @@ public class EmailAccountPresenter implements EmailAccountContract.Presenter {
 
     private SharedPrefsHelper sharedPrefsHelper;
 
-    public EmailAccountPresenter(EmailAccountContract.View view, Context applicationContext) {
+    public EmailAccountPresenter(EmailAccountContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance(applicationContext);
-        sharedPrefsHelper = new SharedPrefsHelper(applicationContext);
+        firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = prefsHelper;
     }
 
     @Override

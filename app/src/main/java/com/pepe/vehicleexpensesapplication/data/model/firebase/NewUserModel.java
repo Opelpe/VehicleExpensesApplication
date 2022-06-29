@@ -1,26 +1,25 @@
 package com.pepe.vehicleexpensesapplication.data.model.firebase;
 
 import com.google.firebase.firestore.PropertyName;
-import com.google.gson.annotations.SerializedName;
 
 public class NewUserModel {
 
-    @PropertyName("DupaDupaDupa")
-    public String USER_ID;
+    @PropertyName("USER_ID")
+    public String userID;
 
-    public String USER_EMAIL;
-    public String PASSWORD;
-    public String NAME;
-    public String PROVIDER;
-    public boolean IS_ANONYMOUS;
+    public String userEmail;
+    public String password;
+    public String name;
+    public String provider;
+    public boolean isAnonymous;
 
     public NewUserModel(String userID, String userEmail, String password, String name, String provider, boolean isAnonymous) {
-        USER_ID = userID;
-        USER_EMAIL = userEmail;
-        PASSWORD = password;
-        NAME = name;
-        PROVIDER = provider;
-        IS_ANONYMOUS = isAnonymous;
+        this.userID = userID;
+        this.userEmail = userEmail;
+        this.password = password;
+        this.name = name;
+        this.provider = provider;
+        this.isAnonymous = isAnonymous;
     }
 
     public NewUserModel(){

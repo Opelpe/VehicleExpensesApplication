@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentMainBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.activity.MyMainActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.refill.RefillActivity;
@@ -39,7 +40,10 @@ public class MainFragment extends Fragment implements MainFragmentContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        presenter = new MainFragmentPresenter(this, getContext());
+
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(binding.getRoot().getContext());
+
+        presenter = new MainFragmentPresenter(this, sharedPrefsHelper);
 
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

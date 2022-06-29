@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,22 +20,30 @@ import java.util.List;
 public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String HISTORY_ADAPTER_TAG = "HISTORY_ADAPTER_TAG";
 
+
     private View.OnClickListener historyListener;
 
     private HistoryItemListener historyItemListener;
 
-
-    private List<HistoryUIModel> historyList;
+    private final List<HistoryItemModel> itemModelList;
+    private List<HistoryUIModel> historyUIList;
+    private DeleteItemListener deleteItemListener;
 
     public interface HistoryItemListener{
-        void onItemClicked(long itemID, int position);
+        void onItemClicked(long itemID);
+    }
+
+    public interface  DeleteItemListener{
+        void onClick(long itemID);
     }
 
 
-    public HistoryAdapter(HistoryItemListener historyListener, List<HistoryUIModel> historyList) {
+    public HistoryAdapter(HistoryItemListener historyListener, List<HistoryUIModel> historyList, List<HistoryItemModel> itemModels, DeleteItemListener deleteItemListener) {
 
         this.historyItemListener = historyListener;
-        this.historyList = historyList;
+        this.historyUIList = historyList;
+        this.itemModelList = itemModels;
+        this.deleteItemListener = deleteItemListener;
     }
 
     @NonNull
@@ -51,35 +60,29 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         HistoryViewHolder historyHolder = (HistoryViewHolder) holder;
-        Log.d(HISTORY_ADAPTER_TAG, "parsed items list ON BIND VIEW: " + historyList.size());
-        if (historyList.size() != 0) {
-
-            for (int i = 0; i < historyList.size(); i++) {
+        Log.d(HISTORY_ADAPTER_TAG, "parsed items list ON BIND VIEW: " + historyUIList.size());
+        if (historyUIList.size() != 0) {
+            historyHolder.deleteItemButton.setOnClickListener(view -> deleteItemListener.onClick(itemModelList.get(position).itemID));
+            historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(itemModelList.get(position).itemID));
+            for (int i = 0; i < historyUIList.size(); i++) {
 
                     if (position == i) {
-//                        historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(historyList.get(position).ITEM_ID, position));
+                        historyHolder.hDateText.setText(historyUIList.get(i).refillDate);
+                        historyHolder.hMileageText.setText(historyUIList.get(i).currMileageText);
 
-//                        historyHolder.hDateText.setText(historyList.get(i).);
-                        historyHolder.hMileageText.setText(historyList.get(i).currMileageText);
+                        historyHolder.hLittersText.setText(historyUIList.get(i).fuelAmountText);
+                        historyHolder.hExpensesText.setText(historyUIList.get(i).fuelCostText);
 
-                        historyHolder.hLittersText.setText(historyList.get(i).fuelAmountText);
-                        historyHolder.hExpensesText.setText(historyList.get(i).fuelCostText);
-
-                        historyHolder.hAddedMileageText.setText(historyList.get(i).addedMileageText);
-
-//                        if (historyList.get(i).FULL_TANK && position != historyList.size() - 1) {
-//                            historyHolder.hAverageUsageText.setText(historyList.get(i).FUEL_USAGE_TEXT);
+                        historyHolder.hAddedMileageText.setText(historyUIList.get(i).addedMileageText);
+                        historyHolder.hAverageUsageText.setText(historyUIList.get(i).fuelUsageText);
 //                        }
 
-                        if (position == historyList.size() - 1) {
+                        if (position == historyUIList.size() - 1) {
+                            historyHolder.hDateText.setText(historyUIList.get(i).refillDate);
 
-//                            historyHolder.itemView.setOnClickListener(view -> historyItemListener.onItemClicked(historyList.get(position).ITEM_ID, position));
-
-//                            historyHolder.hDateText.setText(historyList.get(i).REFILL_DATE);
-
-                            historyHolder.hMileageText.setText(historyList.get(i).currMileageText);
-                            historyHolder.hLittersText.setText(historyList.get(i).fuelAmountText);
-                            historyHolder.hExpensesText.setText(historyList.get(i).fuelCostText);
+                            historyHolder.hMileageText.setText(historyUIList.get(i).currMileageText);
+                            historyHolder.hLittersText.setText(historyUIList.get(i).fuelAmountText);
+                            historyHolder.hExpensesText.setText(historyUIList.get(i).fuelCostText);
                         }
                 }
             }
@@ -88,7 +91,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return historyList.size();
+        return historyUIList.size();
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder {
@@ -101,6 +104,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView hItemIDText;
         TextView hLittersText;
 
+        ImageButton deleteItemButton;
+
         public HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -111,6 +116,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             hAverageUsageText = itemView.findViewById(R.id.historyAverageUsageText);
             hItemIDText = itemView.findViewById(R.id.historyItemIdText);
             hLittersText = itemView.findViewById(R.id.historyLittersText);
+
+            deleteItemButton = itemView.findViewById(R.id.deleteHistoryButton);
         }
     }
 

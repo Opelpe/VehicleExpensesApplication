@@ -15,10 +15,10 @@ public class LogOutPresenter implements LogOutContract.Presenter {
     private FirebaseHelper firebaseHelper;
     private SharedPrefsHelper sharedPrefsHelper;
 
-    public LogOutPresenter(LogOutContract.View view, Context context) {
+    public LogOutPresenter(LogOutContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance(context);
-        sharedPrefsHelper = new SharedPrefsHelper(context);
+        firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = prefsHelper;
     }
 
     @Override

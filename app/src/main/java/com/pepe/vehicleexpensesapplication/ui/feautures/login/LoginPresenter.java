@@ -1,6 +1,5 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.login;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
@@ -18,10 +17,6 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     private FirebaseHelper.FirebaseAnonymousListener firebaseAnonymousListener =
             new FirebaseHelper.FirebaseAnonymousListener() {
-                @Override
-                public void loginSuccess(boolean success) {
-                    sharedPrefsHelper.saveIsAnonymous(success);
-                }
 
                 @Override
                 public void userData(String userID, String userEmail, String password, String name, String provider, boolean isAnonymous) {
@@ -33,17 +28,17 @@ public class LoginPresenter implements LoginContract.Presenter{
                 }
             };
 
-    public LoginPresenter(LoginContract.View view, Context loginContext){
+    public LoginPresenter(LoginContract.View view, SharedPrefsHelper prefsHelper){
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance(loginContext);
-        sharedPrefsHelper = new SharedPrefsHelper(loginContext);
+        firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = prefsHelper;
     }
 
     @Override
     public void onLocalLoginButtonClicked() {
 
         firebaseHelper.setFirebaseAnonymousListener(firebaseAnonymousListener);
-        firebaseHelper.signInAnonymouslyV2();
+        firebaseHelper.signInAnonymously();
         view.showLoadingDialog();
 
 

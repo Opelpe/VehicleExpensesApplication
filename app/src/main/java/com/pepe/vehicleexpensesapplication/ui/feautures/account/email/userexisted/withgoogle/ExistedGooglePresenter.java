@@ -1,6 +1,5 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withgoogle;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -29,10 +28,10 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
 
     private GoogleSignInClient googleSignInClient;
 
-    public ExistedGooglePresenter(ExistedGoogleContract.View view, Context context) {
+    public ExistedGooglePresenter(ExistedGoogleContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        sharedPrefsHelper = new SharedPrefsHelper(context);
-        firebaseHelper = FirebaseHelper.getInstance(context);
+        sharedPrefsHelper = prefsHelper;
+        firebaseHelper = FirebaseHelper.getInstance();
 
     }
 
@@ -82,7 +81,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
                             userMap.put("Displayed name", displayedName);
                             userMap.put("Provider", provider);
 
-                            firebaseHelper.usersIDDocument(uID)
+                            firebaseHelper.usersIdDocument(uID)
                                     .set(userMap)
                                     .addOnCompleteListener(task1 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
                                             + "\n successfully added to Users collection by GoogleSignIn, Email: " + email));
@@ -92,7 +91,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
                             providerMap.put("Email", email);
                             providerMap.put("UID", uID);
 
-                            firebaseHelper.providersUIDDocument(email)
+                            firebaseHelper.providersUIdDocument(email)
                                     .set(providerMap)
                                     .addOnCompleteListener(task12 -> Log.d(EXISTED_GOOGLE_PRESENTER_TAG, ConstantsPreferences.SH_FIRESTORE_TAG
                                             + " success with saving GOOGLE providers"))
@@ -113,7 +112,7 @@ public class ExistedGooglePresenter implements ExistedGoogleContract.Presenter {
                                 providerMap.put("Email", email);
                                 providerMap.put("UID", uID);
 
-                                firebaseHelper.providersUIDDocument(email)
+                                firebaseHelper.providersUIdDocument(email)
                                         .set(providerMap);
 
                                 view.cancelLoadingDialog();

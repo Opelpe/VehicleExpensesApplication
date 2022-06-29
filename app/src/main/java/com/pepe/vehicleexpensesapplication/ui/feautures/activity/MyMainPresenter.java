@@ -1,6 +1,5 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.activity;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
@@ -22,11 +21,11 @@ public class MyMainPresenter implements MyMainContract.Presenter {
         @Override
         public void usersData(NewUserModel userData) {
 
-            Log.d(MAIN_PRESENTER_TAG, "new user model in MAIN ACTIVITY, ID: " + userData.USER_ID);
+            Log.d(MAIN_PRESENTER_TAG, "new user model in MAIN ACTIVITY, ID: " + userData.userID);
 
-                String userPassed = userData.USER_ID;
+                String userPassed = userData.userID;
                 String userShared = sharedPrefsHelper.getSignedUserID();
-                String provider = userData.PROVIDER;
+                String provider = userData.provider;
 
                 if (userPassed != null){
                     if (userPassed.equals(userShared)){
@@ -43,17 +42,17 @@ public class MyMainPresenter implements MyMainContract.Presenter {
         }
     };
 
-    public MyMainPresenter(MyMainContract.View view, Context context) {
+    public MyMainPresenter(MyMainContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        firebaseHelper = FirebaseHelper.getInstance(context);
-        sharedPrefsHelper = new SharedPrefsHelper(context);
+        firebaseHelper = FirebaseHelper.getInstance();
+        sharedPrefsHelper = prefsHelper;
     }
 
     @Override
     public void onViewCreated() {
 
         firebaseHelper.setFirebaseUsersListener(firebaseUserListener);
-        firebaseHelper.getCurrentUserCallbackV2();
+        firebaseHelper.checkCurrentUserCallback();
 
     }
 

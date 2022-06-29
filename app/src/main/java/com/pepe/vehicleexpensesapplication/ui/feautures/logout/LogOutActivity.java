@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityLogOutBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.splash.SplashActivity;
 
@@ -29,7 +30,9 @@ public class LogOutActivity extends AppCompatActivity implements LogOutContract.
 
         setContentView(binding.getRoot());
 
-        presenter = new LogOutPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new LogOutPresenter(this, sharedPrefsHelper);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))

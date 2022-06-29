@@ -29,7 +29,7 @@ public class HistoryPresenterTest {
     @Before
     public void setUp() throws Exception {
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs);
-       presenter = new HistoryPresenter(view, context);
+//       presenter = new HistoryPresenter(view, context);
     }
 
 //    public void testOnViewCreated() {

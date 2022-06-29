@@ -1,6 +1,5 @@
 package com.pepe.vehicleexpensesapplication.ui.feautures.account.email.usernew;
 
-import android.content.Context;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
@@ -40,10 +39,10 @@ public class NewUserPresenter implements NewUserContract.Presenter {
     };
 
 
-    public NewUserPresenter(NewUserContract.View view, Context applicationContext) {
+    public NewUserPresenter(NewUserContract.View view, SharedPrefsHelper prefsHelper) {
         this.view = view;
-        sharedPrefsHelper = new SharedPrefsHelper(applicationContext);
-        firebaseHelper = FirebaseHelper.getInstance(applicationContext);
+        sharedPrefsHelper = prefsHelper;
+        firebaseHelper = FirebaseHelper.getInstance();
     }
 
     @Override
@@ -170,7 +169,7 @@ public class NewUserPresenter implements NewUserContract.Presenter {
                     userMap.put("Name", enteredName);
                     userMap.put("User ID", uID);
 
-                    firebaseHelper.usersIDDocument(uID)
+                    firebaseHelper.usersIdDocument(uID)
                             .set(userMap);
 
                     Map<String, Object> providerMap = new HashMap<>();

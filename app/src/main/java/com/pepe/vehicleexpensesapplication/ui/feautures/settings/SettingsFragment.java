@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.adapters.SettingsAdapter;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.FragmentSettingsBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.login.LoginActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.logout.LogOutActivity;
@@ -59,7 +60,9 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
         }
 
 
-        presenter = new SettingsPresenter(this, getContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(binding.getRoot().getContext());
+
+        presenter = new SettingsPresenter(this, sharedPrefsHelper);
 
         presenter.onViewCreated();
 

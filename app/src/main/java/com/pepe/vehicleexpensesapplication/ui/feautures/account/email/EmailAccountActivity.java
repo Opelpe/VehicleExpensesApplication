@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pepe.vehicleexpensesapplication.R;
 import com.pepe.vehicleexpensesapplication.data.firebase.FirebaseHelper;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityEmailAccountBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withemail.ExistedEmailActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withgoogle.ExistedGoogleActivity;
@@ -45,7 +46,9 @@ public class EmailAccountActivity extends AppCompatActivity implements EmailAcco
 
         setContentView(binding.getRoot());
 
-        presenter = new EmailAccountPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new EmailAccountPresenter(this, sharedPrefsHelper);
 
         loadingEmailBuilder = new AlertDialog.Builder(this);
         existsEmailBuilder = new AlertDialog.Builder(this);

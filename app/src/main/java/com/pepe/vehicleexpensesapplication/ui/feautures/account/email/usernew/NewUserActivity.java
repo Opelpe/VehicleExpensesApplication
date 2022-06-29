@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pepe.vehicleexpensesapplication.R;
+import com.pepe.vehicleexpensesapplication.data.sharedprefs.SharedPrefsHelper;
 import com.pepe.vehicleexpensesapplication.databinding.ActivityNewUserBinding;
 import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withemail.ExistedEmailActivity;
 import com.pepe.vehicleexpensesapplication.ui.feautures.account.email.userexisted.withgoogle.ExistedGoogleActivity;
@@ -48,7 +49,9 @@ public class NewUserActivity extends AppCompatActivity implements NewUserContrac
 
         setContentView(binding.getRoot());
 
-        presenter = new NewUserPresenter(this, getApplicationContext());
+        SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
+
+        presenter = new NewUserPresenter(this, sharedPrefsHelper);
 
         loadingDialogBuilder = new AlertDialog.Builder(this);
         existedEmailDialogBuilder = new AlertDialog.Builder(this);
